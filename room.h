@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include <object.h>
+#include "person.h"
+#include <memory>
 
 enum class Ways{
 	Up,
@@ -50,7 +52,10 @@ public:
 
 	sf::RectangleShape GetBound(); // получить модель комнаты
 	std::vector<Door*> GetDoors(); // получить двери в комнате
-	std::vector<Weapon*> GetObjects(); // получить объекты в комнате
+	std::vector<std::shared_ptr<Object>> GetObjects(); // получить объекты в комнате
+
+	void GiveItem(Inventory& sd, int gh);
+	void SetItem(Inventory& sd, int gh, float x, float y);
 
 	Room* toLeft() const; // получить комнату слева
 	Room* toRight() const; // получить комнату справа
@@ -60,7 +65,7 @@ public:
 private:
 	sf::RectangleShape bound;
 	std::vector<Door*> door = {};
-	std::vector<Weapon*> items = {};
+	std::vector<std::shared_ptr<Object>> items = {};
 	Room* left = 0;
 	Room* right = 0;
 	Room* up = 0;

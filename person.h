@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
+#include "object.h"
 
 class Person{
 public:
@@ -44,6 +45,22 @@ private:
 	std::string name;
 	sf::Sprite model_of_hero;
 	std::string name_texture;
+};
+
+class Inventory{
+public:
+	Inventory();
+
+	~Inventory();
+
+	void SetItem(std::shared_ptr<Object> gh);
+
+	std::shared_ptr<Object> GetItem (int gh);
+
+	void EraseItem(int gh);
+
+private:
+	std::vector<std::shared_ptr<Object>> items = {};
 };
 
 #endif /* PERSON_H_ */

@@ -93,6 +93,7 @@ Room* Level::GetBeginRoom(){
 
 void RenderLevel(Person& Our_Hero){
 	Level QQQ(6);
+	Inventory sd;
 	QQQ.NewRoom();
 	sf::RenderWindow window_H(sf::VideoMode(SIZE_WINDOW, SIZE_WINDOW), "My window");
 	Room* current_room = QQQ.GetBeginRoom();
@@ -102,6 +103,8 @@ void RenderLevel(Person& Our_Hero){
 	int flag_keyboardD = 0;
 	int flag_keyboardW = 0;*/
 	int flag_keyboardQ = 0;
+	int flag_keyboardE = 0;
+	int flag_keyboardF = 0;
 
 	Our_Hero.SetPosition(300.f, 300.f);
 
@@ -189,7 +192,7 @@ void RenderLevel(Person& Our_Hero){
 				/*for(size_t i = 0; i < current_room->GetDoors().size(); i++){
 					std::cout << current_room->GetDoors()[i]->GetWay() << std::endl;
 				}*/
-				int number_of_door = Check(current_room, Our_Hero);
+				int number_of_door = CheckDoors(current_room, Our_Hero);
 				if(number_of_door != 5){
 
 					//std::cout << number_of_door << " Hello" << std::endl;
@@ -229,10 +232,35 @@ void RenderLevel(Person& Our_Hero){
 			flag_keyboardQ = 0;
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		{
+			if(flag_keyboardE == 0){
+				int number_of_item = CheckItems(current_room->GetObjects(), Our_Hero);
+				if(number_of_item != -1){
+					current_room->GiveItem(sd, number_of_item);
+				}
+				flag_keyboardE = 1;
+			}
+		}else{
+			flag_keyboardE = 0;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+		{
+			if(flag_keyboardF == 0){
+				int gh = 0;
+				//std::cin >> gh;
+				current_room->SetItem(sd, gh, Our_Hero.GetPosition().x, Our_Hero.GetPosition().y);
+				flag_keyboardF = 1;
+			}
+		}else{
+			flag_keyboardF = 0;
+		}
+
 	}
 }
 
-int Check(Room* current_room, const Person& Our_Hero){
+int CheckDoors(Room* current_room, const Person& Our_Hero){
 	for(size_t i = 0; i < current_room->GetDoors().size(); i++){
 		if(CheckDoor(current_room->GetDoors()[i], Our_Hero)){
 			return i;
@@ -247,6 +275,25 @@ bool CheckDoor(Door* door, const Person& Our_Hero){
 			Our_Hero.GetPosition().x < door-> GetPosition().x + 15 &&
 			Our_Hero.GetPosition().x > door-> GetPosition().x - 5 &&
 			Our_Hero.GetPosition().y > door-> GetPosition().y - 5){
+		return true;
+	}
+	return false;
+}
+
+int CheckItems(const std::vector<std::shared_ptr<Object>>& gh, const Person& Our_Hero){
+	for(size_t i = 0; i < gh.size(); i++){
+		if(CheckItem(gh[i], Our_Hero)){
+			return i;
+		}
+	}
+	return -1;
+}
+
+bool CheckItem(const std::shared_ptr<Object>& item, const Person& Our_Hero){
+	if(Our_Hero.GetPosition().y < item -> GetPosition().y + 15 &&
+			Our_Hero.GetPosition().x < item-> GetPosition().x + 15 &&
+			Our_Hero.GetPosition().x > item-> GetPosition().x - 5 &&
+			Our_Hero.GetPosition().y > item-> GetPosition().y - 5){
 		return true;
 	}
 	return false;

@@ -26,8 +26,12 @@ private:
 
 void RenderLevel(Person& Our_Hero); // сделать и прорисовывать уровень
 
-int Check(Room* current_room, const Person& Our_Hero); // проверить объекты (двери)
+int CheckDoors(Room* current_room, const Person& Our_Hero); // проверить объекты (двери)
 
 bool CheckDoor(Door* door, const Person& Our_Hero); // проверить дверь на взаимодействие
+
+int CheckItems(const std::vector<std::shared_ptr<Object>>& gh, const Person& Our_Hero);
+
+bool CheckItem(const std::shared_ptr<Object>& gh, const Person& Our_Hero);
 
 #endif /* LEVEL_H_ */

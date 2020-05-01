@@ -53,9 +53,25 @@ int StartMenu(Person& Our_Hero){
 
 	MenuItem rectangleW(500, 50, colorW, 150, 200, texture);
 	choice.push_back(rectangleW);
-	MenuItem rectangleA(500, 50, colorA, 150, 300, texture);
+
+	sf::Texture texture2;
+
+	if (!texture2.loadFromFile("/home/nikolay/Desktop/Eclipse/smfl/src/warrior.jpg"))
+	{
+	   std::cout << "Pizdec" << std::endl;
+	}
+
+	MenuItem rectangleA(500, 50, colorA, 150, 300, texture2);
 	choice.push_back(rectangleA);
-	MenuItem rectangleR(500, 50, colorR, 150, 400, texture);
+
+	sf::Texture texture3;
+
+	if (!texture3.loadFromFile("/home/nikolay/Desktop/Eclipse/smfl/src/rogue.jpg"))
+	{
+	   std::cout << "Pizdec" << std::endl;
+	}
+
+	MenuItem rectangleR(500, 50, colorR, 150, 400, texture3);
 	choice.push_back(rectangleR);
 
 	free(colorW);

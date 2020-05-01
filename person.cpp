@@ -67,3 +67,23 @@ sf::Vector2f Person::GetPosition() const{
 sf::Sprite Person::GetModel() const{
 	return model_of_hero;
 }
+
+Inventory::Inventory(){}
+
+Inventory::~Inventory(){
+	for(size_t i = 0; i < items.size(); i++){
+		std::cout << "Helen " << items[i]->GetType() << std::endl;
+	}
+};
+
+void Inventory::SetItem(std::shared_ptr<Object> gh){
+	items.push_back(gh);
+}
+
+std::shared_ptr<Object> Inventory::GetItem (int gh){
+	return items[gh];
+}
+
+void Inventory::EraseItem(int gh){
+	items.erase(items.begin() + gh);
+}

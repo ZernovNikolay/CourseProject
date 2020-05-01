@@ -33,9 +33,6 @@ Room::~Room(){
 	for(size_t i = 0; i < door.size(); i++){
 		delete door[i];
 	}
-	for(size_t i = 0; i < items.size(); i++){
-		delete items[i];
-	}
 }
 
 void Room::SetLeftDoor(){
@@ -75,7 +72,7 @@ void Room::SetDown(Room* gh){
 }
 
 void Room::SetWeapon(float x, float y){
-	items.push_back(new Weapon(x, y));
+	items.push_back(std::make_shared<Weapon>("Weapon", x, y));
 }
 
 void Room::SetBound(float length, float high, int* color, float x, float y){
@@ -93,8 +90,19 @@ std::vector<Door*> Room::GetDoors(){
 	return door;
 }
 
-std::vector<Weapon*> Room::GetObjects(){
+std::vector<std::shared_ptr<Object>> Room::GetObjects(){
 	return items;
+}
+
+void Room::GiveItem(Inventory& sd, int gh){
+	sd.SetItem(items[gh]);
+	items.erase(items.begin() + gh);
+}
+
+void Room::SetItem(Inventory& sd, int gh, float x, float y){
+	items.push_back(sd.GetItem(gh));
+	items[items.size()-1]->SetPosition(x,y);
+	sd.EraseItem(gh);
 }
 
 Room* Room::toLeft() const{
