@@ -6,6 +6,26 @@
 #include <iostream>
 #include "object.h"
 
+const float velocity = 0.2;
+
+class Inventory{
+public:
+	Inventory();
+
+	~Inventory();
+
+	void SetItem(std::shared_ptr<Object> gh);
+
+	size_t GetSize() const;
+
+	std::shared_ptr<Object> GetItem (int gh);
+
+	void EraseItem(int gh);
+
+private:
+	std::vector<std::shared_ptr<Object>> items = {};
+};
+
 class Person{
 public:
 	Person(std::string gh); // добавить имя для персонажа
@@ -36,6 +56,8 @@ public:
 
 	sf::Sprite GetModel() const; // получить модельку героя
 
+	Inventory* GetInventory();
+
 private:
 
 	void SetClass(std::string gh); // установить класс
@@ -45,22 +67,8 @@ private:
 	std::string name;
 	sf::Sprite model_of_hero;
 	std::string name_texture;
-};
 
-class Inventory{
-public:
-	Inventory();
-
-	~Inventory();
-
-	void SetItem(std::shared_ptr<Object> gh);
-
-	std::shared_ptr<Object> GetItem (int gh);
-
-	void EraseItem(int gh);
-
-private:
-	std::vector<std::shared_ptr<Object>> items = {};
+	Inventory* inventory;
 };
 
 #endif /* PERSON_H_ */

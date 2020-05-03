@@ -19,6 +19,14 @@ class Door{
 public:
 	Door(const float x, const float y, const int new_way); // установить новую дверь
 
+	void SetOpen();
+
+	void SetClose(int answer);
+
+	bool GetOpen() const;
+
+	int GetQuest() const;
+
 	sf::RectangleShape GetBound() const; // получить ее модельку
 
 	sf::Vector2f GetPosition() const; // получить местоположение двери
@@ -28,6 +36,8 @@ public:
 private:
 	sf::RectangleShape door;
 	int way;
+	bool opened;
+	int quest;
 };
 
 class Room{
@@ -46,16 +56,18 @@ public:
 	void SetUp(Room* gh); // привязать комнату вверх
 	void SetDown(Room* gh); // привязать комнату вниз
 
-	void SetWeapon(float x, float y); // создать оружие на точке комнаты
+	void SetWeapon(float x, float y, int damage, const std::string& new_name); // создать оружие на точке комнаты
+	void SetHeal(float x, float y, int healing, const std::string& new_name);
+	void SetKey(float x, float y, int new_key);
 
-	void SetBound(float length, float high, int* color, float x, float y); // создать контур и цвет комнаты
+	void SetBound(int* color); // создать контур и цвет комнаты
 
 	sf::RectangleShape GetBound(); // получить модель комнаты
 	std::vector<Door*> GetDoors(); // получить двери в комнате
 	std::vector<std::shared_ptr<Object>> GetObjects(); // получить объекты в комнате
 
-	void GiveItem(Inventory& sd, int gh);
-	void SetItem(Inventory& sd, int gh, float x, float y);
+	void GiveItem(Inventory* sd, int gh);
+	void SetItem(Inventory* sd, int gh, float x, float y);
 
 	Room* toLeft() const; // получить комнату слева
 	Room* toRight() const; // получить комнату справа

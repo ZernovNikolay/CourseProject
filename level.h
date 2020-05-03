@@ -34,4 +34,6 @@ int CheckItems(const std::vector<std::shared_ptr<Object>>& gh, const Person& Our
 
 bool CheckItem(const std::shared_ptr<Object>& gh, const Person& Our_Hero);
 
+bool CheckClosedDoor(Door* door, Inventory* sd);
+
 #endif /* LEVEL_H_ */

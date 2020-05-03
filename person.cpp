@@ -2,6 +2,7 @@
 
 Person::Person(std::string gh){
 	name = gh;
+	inventory = new Inventory;
 }
 
 Person::Person(){}
@@ -9,6 +10,7 @@ Person::Person(){}
 Person::~Person(){
 	std::cout << "Your name is " << name << "\n" << "Your class is " << class_type
 			<< "\n" << "Your health is " << health_point << "\n" << "Texture is on file: " << name_texture << std::endl;
+	delete inventory;
 }
 
 void Person::SetCharacter(std::string gh){
@@ -68,16 +70,25 @@ sf::Sprite Person::GetModel() const{
 	return model_of_hero;
 }
 
+Inventory* Person::GetInventory(){
+	return inventory;
+}
+
 Inventory::Inventory(){}
 
 Inventory::~Inventory(){
+	std::cout << "Your inventory:" << std::endl;
 	for(size_t i = 0; i < items.size(); i++){
-		std::cout << "Helen " << items[i]->GetType() << std::endl;
+		std::cout << items[i]->GetType() << " /" << items[i]->GetName() << "/ " << items[i]->GetStats() << std::endl;
 	}
 };
 
 void Inventory::SetItem(std::shared_ptr<Object> gh){
 	items.push_back(gh);
+}
+
+size_t Inventory::GetSize() const{
+	return items.size();
 }
 
 std::shared_ptr<Object> Inventory::GetItem (int gh){

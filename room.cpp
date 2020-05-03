@@ -8,6 +8,8 @@ Door::Door(const float x, const float y, int new_way){
 	door.setOutlineColor(sf::Color(255, 255, 255));
 	door.setFillColor(sf::Color(0, 0, 0));
 	way = new_way;
+	opened = true;
+	quest = 0;
 	//std::cout << x << " " << y << " " << way << std::endl;
 }
 
@@ -23,8 +25,32 @@ int Door::GetWay() const{
 	return way;
 }
 
+void Door::SetOpen(){
+	if(!opened){
+		door.setOutlineColor(sf::Color(255, 255, 255));
+		opened = true;
+		quest = 0;
+	}
+}
+
+void Door::SetClose(int answer){
+	if(opened){
+		door.setOutlineColor(sf::Color(0, 0, 0));
+		opened = false;
+		quest = answer;
+	}
+}
+
+int Door::GetQuest() const{
+	return quest;
+}
+
+bool Door::GetOpen() const{
+	return opened;
+}
+
 Room::Room(){
-	bound.setSize(sf::Vector2f(200.f, 200.f));
+	bound.setSize(sf::Vector2f(400.f, 400.f));
 	bound.setOutlineThickness(10);
 }
 
@@ -71,14 +97,22 @@ void Room::SetDown(Room* gh){
 	SetDownDoor();
 }
 
-void Room::SetWeapon(float x, float y){
-	items.push_back(std::make_shared<Weapon>("Weapon", x, y));
+void Room::SetWeapon(float x, float y, int damage, const std::string& new_name){
+	items.push_back(std::make_shared<Weapon>("Weapon", x, y, damage, new_name));
 }
 
-void Room::SetBound(float length, float high, int* color, float x, float y){
-	bound.setSize(sf::Vector2f(200.f, 200.f));
+void Room::SetHeal(float x, float y, int healing, const std::string& new_name){
+	items.push_back(std::make_shared<Heal>("Heal", x, y, healing, new_name));
+}
+
+void Room::SetKey(float x, float y, int new_key){
+	items.push_back(std::make_shared<Key>("Key", x, y, new_key));
+}
+
+void Room::SetBound(int* color){
+	bound.setSize(sf::Vector2f(400.f, 400.f));
 	bound.setFillColor(sf::Color(color[0], color[1], color[2]));
-	bound.setPosition(sf::Vector2f(x, y));
+	bound.setPosition(sf::Vector2f(200, 200));
 	bound.setOutlineColor(sf::Color(0, 0, 0));
 }
 
@@ -94,15 +128,15 @@ std::vector<std::shared_ptr<Object>> Room::GetObjects(){
 	return items;
 }
 
-void Room::GiveItem(Inventory& sd, int gh){
-	sd.SetItem(items[gh]);
+void Room::GiveItem(Inventory* sd, int gh){
+	sd->SetItem(items[gh]);
 	items.erase(items.begin() + gh);
 }
 
-void Room::SetItem(Inventory& sd, int gh, float x, float y){
-	items.push_back(sd.GetItem(gh));
+void Room::SetItem(Inventory* sd, int gh, float x, float y){
+	items.push_back(sd->GetItem(gh));
 	items[items.size()-1]->SetPosition(x,y);
-	sd.EraseItem(gh);
+	sd->EraseItem(gh);
 }
 
 Room* Room::toLeft() const{
