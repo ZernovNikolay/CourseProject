@@ -4,6 +4,8 @@
 #include <room.h>
 #include <string>
 #include "person.h"
+#include "menu.h"
+#include "gameplay.h"
 
 const float SIZE_WINDOW = 800;
 
@@ -26,14 +28,10 @@ private:
 
 void RenderLevel(Person& Our_Hero); // сделать и прорисовывать уровень
 
-int CheckDoors(Room* current_room, const Person& Our_Hero); // проверить объекты (двери)
-
-bool CheckDoor(Door* door, const Person& Our_Hero); // проверить дверь на взаимодействие
-
 int CheckItems(const std::vector<std::shared_ptr<Object>>& gh, const Person& Our_Hero);
 
 bool CheckItem(const std::shared_ptr<Object>& gh, const Person& Our_Hero);
 
-bool CheckClosedDoor(Door* door, Inventory* sd);
+void ShowInventory(Person& Our_Hero, Room* current_room);
 
 #endif /* LEVEL_H_ */

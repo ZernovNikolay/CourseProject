@@ -74,12 +74,30 @@ Inventory* Person::GetInventory(){
 	return inventory;
 }
 
+void Person::UseItem(int number){
+	int gh = inventory->GetItem(number)->GetTypeInt();
+	int made = inventory->GetItem(number)->GetStats();
+	switch(gh){
+	case 0:
+		damage+=made;
+		inventory->EraseItem(number);
+		break;
+	case 1:
+		health_point+=made;
+		inventory->EraseItem(number);
+		break;
+	case 2:
+		std::cout << "You can't use this" << std::endl;
+		break;
+	}
+}
+
 Inventory::Inventory(){}
 
 Inventory::~Inventory(){
-	std::cout << "Your inventory:" << std::endl;
+	std::cout << "Your inventory:\n";
 	for(size_t i = 0; i < items.size(); i++){
-		std::cout << items[i]->GetType() << " /" << items[i]->GetName() << "/ " << items[i]->GetStats() << std::endl;
+		std::cout << items[i]->GetType() << " /" << items[i]->GetName() << "/ " << items[i]->GetStats() << "\n";
 	}
 };
 

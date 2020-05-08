@@ -12,6 +12,10 @@ class MenuItem{
 public:
 	MenuItem(float length, float high, int* color, float x, float y, const sf::Texture& texture);
 
+	MenuItem();
+
+	void setBound(float length, float high, int* color, float x, float y);
+
 	void DrawItem(sf::RenderWindow& window);
 
 	std::tuple<float, float, float, float> getBound();

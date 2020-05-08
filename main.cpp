@@ -95,7 +95,8 @@ int main()
 	std::string name;
 	std::cin >> name;
 	Person Our_Hero(name);
-	CastomizeMenu(Our_Hero, StartMenu(Our_Hero));
+	int gh = StartMenu(Our_Hero);
+	CastomizeMenu(Our_Hero, gh);
 	RenderLevel(Our_Hero);
 
 	return 0;

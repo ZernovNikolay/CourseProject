@@ -30,8 +30,11 @@ public:
 
 	std::string GetType() const;
 
+	int GetTypeInt() const;
+
 private:
 	std::string type;
+	int typeInt = -1;
 };
 
 class Weapon : public Object{

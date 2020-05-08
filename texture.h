@@ -7,6 +7,12 @@
 const std::vector<std::string> Archer_textures = {"/home/nikolay/Desktop/Eclipse/smfl/src/cricket.png",
 												"/home/nikolay/Desktop/Eclipse/smfl/src/smile.png"};
 
+const std::vector<std::string> Warrior_textures = {};
+
+
+const std::vector<std::string> Rogue_textures = {};
+
+
 void GetTexture(int gh, std::vector<sf::Texture>& Array_texture, std::vector<sf::Sprite>& Array_sprite); // получить текстуры для массива
 
 #endif /* TEXTURE_H_ */

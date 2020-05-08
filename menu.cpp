@@ -7,6 +7,13 @@ MenuItem::MenuItem(float length, float high, int* color, float x, float y, const
 	item.setTexture(&texture);
 }
 
+MenuItem::MenuItem(){}
+
+void MenuItem::setBound(float length, float high, int* color, float x, float y){
+	item.setSize(sf::Vector2f(length, high));
+	item.setPosition(sf::Vector2f(x, y));
+}
+
 void MenuItem::DrawItem(sf::RenderWindow& window){
 	window.draw(item);
 }
@@ -148,7 +155,7 @@ void CastomizeMenu(Person& Our_Hero, int class_Our_Hero){
 	   std::cout << "Pizdec" << std::endl;
 	}
 
-	MenuItem rectangleOK(500, 50, colorW, 150, 200, texture);
+	MenuItem rectangleOK(500, 50, colorW, 150, 400, texture);
 
 	free(colorW);
 

@@ -9,6 +9,13 @@ void LoadTextures(){
 
 Object::Object(const std::string& name){
 	type = name;
+	if(type == "Weapon"){
+		typeInt = 0;
+	}else if(type == "Heal"){
+		typeInt = 1;
+	}else if(type == "Key"){
+		typeInt = 2;
+	}
 }
 
 Object::~Object(){
@@ -16,6 +23,10 @@ Object::~Object(){
 
 std::string Object::GetType() const{
 	return type;
+}
+
+int Object::GetTypeInt() const{
+	return typeInt;
 }
 
 Weapon::Weapon(const std::string& type, float x, float y, int new_damage, const std::string& new_name) : Object(type){
