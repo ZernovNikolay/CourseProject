@@ -4,10 +4,12 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
-#include <object.h>
+#include "object.h"
 #include "person.h"
 #include <memory>
-
+#include <vector>
+#include "enemy.h"
+#include <chrono>
 enum class Ways{
 	Up,
 	Right,
@@ -42,7 +44,7 @@ private:
 
 class Room{
 public:
-	Room(); // создать комнату
+	Room(); // создать комнату, SIZE = 400
 
 	~Room(); // очистить все указатели
 
@@ -73,8 +75,13 @@ public:
 	Room* toRight() const; // получить комнату справа
 	Room* toUp() const; // получить комнату сверху
 	Room* toDown() const; // получить комнату снизу
-
+	bool checkTimer(); // проверить, прошло ли timedif с предыдущей проверки (используется для регулировки поведения врагов и снарядов)
+	void timeBasedEvents(Person& player);//смещение проджектайлов, врагов, прием атак игрока
+	const std::vector<Enemy*>& getEnemies() const {
+		return enemies;
+	}
 private:
+	
 	sf::RectangleShape bound;
 	std::vector<Door*> door = {};
 	std::vector<std::shared_ptr<Object>> items = {};
@@ -82,6 +89,11 @@ private:
 	Room* right = 0;
 	Room* up = 0;
 	Room* down = 0;
+	std::vector<Enemy*> enemies;
+	std::vector<sf::Sprite> player_projectiles;
+	std::vector<sf::Sprite> enemy_projectiles;
+	time_t timer;
+	float timedif = 0.1;
 };
 
 void RoomBindLR(Room* lhs, Room* rhs); // связать комнаты левую и правую

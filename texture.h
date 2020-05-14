@@ -4,8 +4,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-const std::vector<std::string> Archer_textures = {"/home/nikolay/Desktop/Eclipse/smfl/src/cricket.png",
-												"/home/nikolay/Desktop/Eclipse/smfl/src/smile.png"};
+const std::string _src_path_texture = "../src/textures/";
+
+const std::vector<std::string> Archer_textures = { _src_path_texture + "cricket.png",
+												_src_path_texture + "smile.png"};
 
 const std::vector<std::string> Warrior_textures = {};
 

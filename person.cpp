@@ -92,6 +92,13 @@ void Person::UseItem(int number){
 	}
 }
 
+void Person::receiveDamage(int damage) {
+	health_point -= damage;
+	if (health_point <= 0){
+		std::cout << "Game over!" << std::endl;
+		exit(0);
+	}
+}
 Inventory::Inventory(){}
 
 Inventory::~Inventory(){

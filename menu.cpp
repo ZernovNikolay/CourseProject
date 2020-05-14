@@ -1,5 +1,6 @@
 #include "menu.h"
 #include <vector>
+#include <filesystem>
 
 MenuItem::MenuItem(float length, float high, int* color, float x, float y, const sf::Texture& texture){
 	item.setSize(sf::Vector2f(length, high));
@@ -31,7 +32,6 @@ bool MenuItem::Check(float a, float b){
 
 int StartMenu(Person& Our_Hero){
 	int flag = 0;
-
 	sf::RenderWindow window_start(sf::VideoMode(SIZE, SIZE), "My window");
 
 	int* colorW = (int*)calloc(3, sizeof(int));
@@ -52,10 +52,12 @@ int StartMenu(Person& Our_Hero){
 	std::vector<MenuItem> choice;
 
 	sf::Texture texture;
-
-	if (!texture.loadFromFile("/home/nikolay/Desktop/Eclipse/smfl/src/archer.jpg"))
+	//std::string arch_path = "src/textures/archer.jpg";
+	//std::string CurrentPath(std::filesystem::current_path().generic_string());
+	//std::cout << CurrentPath << std::endl;
+	if (!texture.loadFromFile(_src_path_ + "archer.jpg"))//"/home/nikolay/Desktop/Eclipse/smfl/src/archer.jpg"))
 	{
-	   std::cout << "Pizdec" << std::endl;
+	   std::cout << "Archer.png not found" << std::endl;
 	}
 
 	MenuItem rectangleW(500, 50, colorW, 150, 200, texture);
@@ -63,9 +65,9 @@ int StartMenu(Person& Our_Hero){
 
 	sf::Texture texture2;
 
-	if (!texture2.loadFromFile("/home/nikolay/Desktop/Eclipse/smfl/src/warrior.jpg"))
+	if (!texture2.loadFromFile(_src_path_ + "warrior.jpg"))
 	{
-	   std::cout << "Pizdec" << std::endl;
+	   std::cout << "Warrior.jpg not found" << std::endl;
 	}
 
 	MenuItem rectangleA(500, 50, colorA, 150, 300, texture2);
@@ -73,9 +75,9 @@ int StartMenu(Person& Our_Hero){
 
 	sf::Texture texture3;
 
-	if (!texture3.loadFromFile("/home/nikolay/Desktop/Eclipse/smfl/src/rogue.jpg"))
+	if (!texture3.loadFromFile(_src_path_ + "rogue.jpg"))
 	{
-	   std::cout << "Pizdec" << std::endl;
+	   std::cout << "Rogue.jpg not found" << std::endl;
 	}
 
 	MenuItem rectangleR(500, 50, colorR, 150, 400, texture3);
@@ -150,7 +152,7 @@ void CastomizeMenu(Person& Our_Hero, int class_Our_Hero){
 
 	sf::Texture texture;
 
-	if (!texture.loadFromFile("/home/nikolay/Desktop/Eclipse/smfl/src/archer.jpg"))
+	if (!texture.loadFromFile(_src_path_ + "archer.jpg"))
 	{
 	   std::cout << "Pizdec" << std::endl;
 	}

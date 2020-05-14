@@ -58,18 +58,20 @@ public:
 
 	void UseItem(int number);
 
+	void receiveDamage(int damage);//нанести урон игроку
 private:
 
 	void SetClass(std::string gh); // установить класс
 
 	void SetHP(int gh); // установить хп
 
+
+	int health_point = 10;
 	std::string class_type;
-	int health_point = 0;
 	std::string name;
 	sf::Sprite model_of_hero;
 	std::string name_texture;
-	int damage = 0;
+	int damage = 1;
 
 	Inventory* inventory;
 };

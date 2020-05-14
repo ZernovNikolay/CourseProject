@@ -13,4 +13,5 @@ void WorkWithInventory(bool& flag_keyboardR, Person& Our_Hero, Room*& current_ro
 
 void ShowInventory(Person& Our_Hero, Room* current_room);
 
+
 #endif /* GAMEPLAY_H_ */

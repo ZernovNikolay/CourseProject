@@ -92,6 +92,7 @@ int getRandomNumber(int min, int max)
 
 int main()
 {
+	std::cout << "Please, enter your name" << std::endl;
 	std::string name;
 	std::cin >> name;
 	Person Our_Hero(name);

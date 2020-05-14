@@ -1,4 +1,4 @@
-#include <room.h>
+#include "room.h"
 #include <iostream>
 
 Door::Door(const float x, const float y, int new_way){
@@ -49,7 +49,29 @@ bool Door::GetOpen() const{
 	return opened;
 }
 
+bool Room::checkTimer() {
+	if (static_cast<float>(time(nullptr) - timer) >= timedif) {
+		timer = time(nullptr);
+		return true;
+	}
+	return false;
+}
+
+void Room::timeBasedEvents(Person& player) {
+	for (const auto& i : enemies) {
+		i->move(player);
+	}
+}
+
 Room::Room(){
+	timer = time(nullptr);
+	std::srand(unsigned(std::time(0)));
+	int enemy_num = 1;//std::rand() % 3;
+	for (int i = 0; i < enemy_num; i++) {
+		//enemies[i] = new Rat();
+		std::cout << "enemy is spawned" << std::endl;
+		enemies.push_back(new Rat());
+	}
 	bound.setSize(sf::Vector2f(400.f, 400.f));
 	bound.setOutlineThickness(10);
 }

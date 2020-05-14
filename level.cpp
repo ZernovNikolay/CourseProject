@@ -127,7 +127,13 @@ void RenderLevel(Person& Our_Hero){
 		for(size_t i = 0; i < current_room->GetObjects().size(); i++){
 			window_H.draw(current_room->GetObjects()[i]->GetBound());
 		}
+		if (current_room->checkTimer()) {
+			current_room->timeBasedEvents(Our_Hero);
+		}
 		window_H.draw(Our_Hero.GetModel());
+		for (const auto& enemy : current_room->getEnemies()) {
+			window_H.draw(enemy->GetModel());
+		}
 		window_H.display();
 
 		CheckMoveHero(Our_Hero,current_room);

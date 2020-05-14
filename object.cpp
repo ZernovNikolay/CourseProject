@@ -1,10 +1,12 @@
 #include "object.h"
 #include <iostream>
 
+//const std::string _src_path_ = "../src/textures/";
+
 void LoadTextures(){
-	texture_weapon.loadFromFile("/home/nikolay/Desktop/Eclipse/smfl/src/sword.png");
-	texture_heal.loadFromFile("/home/nikolay/Desktop/Eclipse/smfl/src/heal.png");
-	texture_key.loadFromFile("/home/nikolay/Desktop/Eclipse/smfl/src/key.png");
+	texture_weapon.loadFromFile(_src_path_ + "sword.png");
+	texture_heal.loadFromFile(_src_path_ + "heal.png");
+	texture_key.loadFromFile(_src_path_ + "key.png");
 }
 
 Object::Object(const std::string& name){
