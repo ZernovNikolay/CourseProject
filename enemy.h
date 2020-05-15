@@ -7,25 +7,26 @@ const float ROOM_SIZE = 400;
 class Enemy {
 private:
 	sf::Sprite enemy_model;
-	virtual void SetModel() = 0; // СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РјРѕРґРµР»СЊРєСѓ
+	virtual void SetModel() = 0; // установить модельку
 public:
-	sf::Vector2f GetPosition() const; // РїРѕР»СѓС‡РёС‚СЊ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ РїРµСЂСЃРѕРЅР°Р¶Р°
-	sf::Sprite& GetModel(); // РїРѕР»СѓС‡РёС‚СЊ РјРѕРґРµР»СЊРєСѓ РіРµСЂРѕСЏ
-	void SetPosition(); // СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ РґР»СЏ РїРµСЂСЃРѕРЅР°Р¶Р°
+	sf::Vector2f GetPosition() const; // получить местоположение персонажа
+	sf::Sprite& GetModel(); // получить модельку героя
+	void SetPosition(); // установить местоположение для персонажа
 	virtual sf::Vector2f move(Person& player) = 0;
 };
 
 class Rat : public Enemy{
 	int health_point = 3;
 	const int damage = 1;
-	const float step = 50;
+	const float step = 15;
 	int step_count = 0;
 	sf::Texture texture;
 	void SetModel() override;
 public:
 	Rat() {
-		SetPosition();
 		SetModel();
+		SetPosition();
+		std::cout << GetPosition().x << " " << GetPosition().y;
 	}
 	sf::Vector2f move(Person& player) override;
 };

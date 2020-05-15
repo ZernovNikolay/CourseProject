@@ -109,6 +109,8 @@ void RenderLevel(Person& Our_Hero){
 	bool flag_keyboardE = true;
 	bool flag_keyboardR = true;
 
+	std::srand(time(nullptr));
+
 	Our_Hero.SetPosition(400.f, 400.f);
 
 	while (window_H.isOpen())
