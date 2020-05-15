@@ -93,7 +93,7 @@ private:
 	std::vector<sf::Sprite> player_projectiles;
 	std::vector<sf::Sprite> enemy_projectiles;
 	time_t timer;
-	float timedif = 0.1;
+	float timedif = 0.005;
 };
 
 void RoomBindLR(Room* lhs, Room* rhs); // связать комнаты левую и правую

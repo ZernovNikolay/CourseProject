@@ -65,11 +65,12 @@ void Room::timeBasedEvents(Person& player) {
 
 Room::Room(){
 	timer = time(nullptr);
-	std::srand(unsigned(std::time(0)));
-	int enemy_num = 1;//std::rand() % 3;
+	//std::srand(unsigned(std::time(nullptr)));
+	int enemy_num = std::rand() % 4;
+	std::cout << enemy_num << std::endl;
 	for (int i = 0; i < enemy_num; i++) {
 		//enemies[i] = new Rat();
-		std::cout << "enemy is spawned" << std::endl;
+		//std::cout << "enemy is spawned" << std::endl;
 		enemies.push_back(new Rat());
 	}
 	bound.setSize(sf::Vector2f(400.f, 400.f));

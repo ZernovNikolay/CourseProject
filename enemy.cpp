@@ -9,13 +9,15 @@ sf::Sprite& Enemy::GetModel() {
 }
 void Enemy::SetPosition() {
 	const float room_middle_coordinate = ROOM_SIZE / 2;
-	std::srand(unsigned(std::time(0)));
+	//std::srand(unsigned(std::time(0)));
 
-	float x = ROOM_SIZE / 2 +
-		(std::rand() % static_cast<int>(ROOM_SIZE / 10));
-	float y = ROOM_SIZE / 2 +
-		(std::rand() %	static_cast<int>(ROOM_SIZE / 10));
+	float x = room_middle_coordinate +
+		(std::rand() % static_cast<int>(ROOM_SIZE / 5));
+	float y = room_middle_coordinate +
+		(std::rand() %	static_cast<int>(ROOM_SIZE / 5));
+
 	enemy_model.setPosition(x, y);
+	//std::cout << "setpos" << x << " " << y << std::endl;
 }
 
 sf::Vector2f Rat::move(Person& player) {
@@ -26,7 +28,7 @@ sf::Vector2f Rat::move(Person& player) {
 	int xsign = (player_x - rogue_x) / fabs(player_x - rogue_x);
 	int ysign = (player_y - rogue_y) / fabs(player_y - rogue_y);
 	if (step_count++ % 3 == 0) {
-		std::srand(unsigned(std::time(0)));
+		//std::srand(unsigned(std::time(0)));
 		xsign = std::rand() / 2 == 1 ? -1 : 1;
 		ysign = std::rand() / 2 == 1 ? -1 : 1;
 	}	
