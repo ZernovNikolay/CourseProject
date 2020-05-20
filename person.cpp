@@ -105,7 +105,10 @@ void Person::UseItem(int number){
 }
 
 void Person::receiveDamage(int damage) {
-	health_point -= damage;
+	if (checkTimer()) {
+		health_point -= damage;
+		std::cout << "got hit" << std::endl;
+	}
 	if (health_point <= 0){
 		std::cout << "Game over!" << std::endl;
 		exit(0);
@@ -138,4 +141,14 @@ void Inventory::EraseItem(int gh){
 
 int Person::getDamage() const {
 	return damage;
+}
+
+bool Person::checkTimer() {
+	if (std::chrono::duration_cast<std::chrono::milliseconds>
+		(std::chrono::steady_clock::now() - current_time).count() >
+		invul_time_milliseconds) {
+		current_time = std::chrono::steady_clock::now();
+		return true;
+	}
+	return false;
 }

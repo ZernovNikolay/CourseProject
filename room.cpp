@@ -71,9 +71,9 @@ void Room::timeBasedEvents(Person& player) {
 	std::set<std::list<Projectile>::iterator> projectiles_to_be_deleted;
 	std::set<std::list<Enemy*>::iterator> enemies_to_be_deleted;
 	std::list<std::list<DeathAnimation*>::iterator> death_animations_to_be_erased;
-	for (const auto& enemy : enemies) {
+	/*for (const auto& enemy : enemies) {
 		enemy->toMove(player);
-	}
+	}*/
 
 	for (auto player_projectile = player_projectiles.begin();
 		player_projectile != player_projectiles.end(); 

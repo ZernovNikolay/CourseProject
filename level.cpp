@@ -135,6 +135,7 @@ void RenderLevel(Person& Our_Hero){
 		}
 		window_H.draw(Our_Hero.GetModel());
 		for (const auto& enemy : current_room->getEnemies()) {
+			enemy->toMoveSecondAlgorithm(Our_Hero, current_room->GetBound());
 			window_H.draw(enemy->GetModel());
 		}
 		for (const auto& player_projectile : current_room->getPlayerProjectiles()) {
