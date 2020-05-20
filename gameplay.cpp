@@ -1,7 +1,8 @@
 #include "gameplay.h"
 
+
 void CheckMoveHero(Person& Our_Hero, Room* current_room){
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
 				if(Our_Hero.GetPosition().x - velocity >= current_room->GetBound().getPosition().x){
 					Our_Hero.move(-velocity, 0);

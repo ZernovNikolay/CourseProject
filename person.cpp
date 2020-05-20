@@ -123,3 +123,7 @@ std::shared_ptr<Object> Inventory::GetItem (int gh){
 void Inventory::EraseItem(int gh){
 	items.erase(items.begin() + gh);
 }
+
+int Person::getDamage() const {
+	return damage;
+}

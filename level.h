@@ -24,6 +24,7 @@ public:
 private:
 	std::vector<Room*> collection;
 	int count;
+	bool first_room_flag = true;
 };
 
 void RenderLevel(Person& Our_Hero); // сделать и прорисовывать уровень
