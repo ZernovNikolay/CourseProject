@@ -141,7 +141,7 @@ void RenderLevel(Person& Our_Hero){
 			window_H.draw(player_projectile.getCircleShape());
 		}
 		for (auto& death_animation : current_room->getDeathAnimations()) {
-			window_H.draw(death_animation.getModelC());
+			window_H.draw(death_animation->getModel());
 		}
 		window_H.display();
 
