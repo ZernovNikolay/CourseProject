@@ -50,28 +50,97 @@ bool Door::GetOpen() const{
 }
 
 bool Room::checkTimer() {
-	if (static_cast<float>(time(nullptr) - timer) >= timedif) {
-		timer = time(nullptr);
+	if (std::chrono::duration_cast<std::chrono::milliseconds>
+		(std::chrono::steady_clock::now() - current_time).count() > timedif) {
+		current_time = std::chrono::steady_clock::now();
 		return true;
 	}
 	return false;
 }
 
 void Room::timeBasedEvents(Person& player) {
-	for (const auto& i : enemies) {
-		i->move(player);
+
+	auto cur_bound = GetBound();
+	int curbound_right_x = cur_bound.getPosition().x
+		+ cur_bound.getSize().x - cur_bound.getOutlineThickness();
+	int curbound_left_x = cur_bound.getPosition().x;
+	int curbound_bottom_y = cur_bound.getPosition().y
+		+ cur_bound.getSize().y - cur_bound.getOutlineThickness();
+	int curbound_top_y = cur_bound.getPosition().y;
+
+	std::set<std::list<Projectile>::iterator> projectiles_to_be_deleted;
+	std::set<std::list<Enemy*>::iterator> enemies_to_be_deleted;
+	std::list<std::list<DeathAnimation>::iterator> death_animations_to_be_erased;
+	for (const auto& enemy : enemies) {
+		enemy->toMove(player);
+	}
+
+	for (auto player_projectile = player_projectiles.begin();
+		player_projectile != player_projectiles.end(); 
+		player_projectile++) {
+
+		player_projectile->toMove();
+
+		for (auto enemy = enemies.begin();
+			enemy != enemies.end(); enemy++) {
+			if (player_projectile->checkCollision((*enemy)->GetPosition())) {
+				projectiles_to_be_deleted.insert(player_projectile);
+				if ((*enemy)->receiveDamage(player_projectile->getDamage())) {
+					enemies_to_be_deleted.insert(enemy);
+					death_animations.
+						push_back(DeathAnimation{ (*enemy)->GetPosition(),
+							death_animation_tick_count });
+				}
+				break;
+			}
+		}
+
+		auto pp_pos = player_projectile->getPosition();
+		int pp_x = pp_pos.x, pp_y = pp_pos.y;
+		if (pp_x <= curbound_left_x || pp_x >= curbound_right_x
+			|| pp_y <= curbound_top_y || pp_y >= curbound_bottom_y) {
+			projectiles_to_be_deleted.insert(player_projectile);
+		}
+
+	}
+
+	for (auto death_animation = death_animations.begin();
+		death_animation != death_animations.end(); death_animation++) {
+		if (death_animation->checkTime()) {
+			death_animations_to_be_erased.push_back(death_animation);
+		}
+	}
+
+	for (auto& it : death_animations_to_be_erased) {
+		death_animations.erase(it);
+	}
+
+	for (auto& it : projectiles_to_be_deleted) {
+		player_projectiles.erase(it);
+	}
+
+	for (auto& it : enemies_to_be_deleted) {
+		enemies.erase(it);
+	}
+
+	if (attack_cur_timedif % attack_generating_timedif == 0) {
+		checkAttack();
+		sf::Vector2f player_pos = player.GetPosition();
+		if (createProjectile(player_pos, player.getDamage()))
+			attack_cur_timedif = 1;
+	}
+	else {
+		attack_cur_timedif++;
 	}
 }
 
-Room::Room(){
-	timer = time(nullptr);
-	//std::srand(unsigned(std::time(nullptr)));
-	int enemy_num = std::rand() % 4;
-	std::cout << enemy_num << std::endl;
-	for (int i = 0; i < enemy_num; i++) {
-		//enemies[i] = new Rat();
-		//std::cout << "enemy is spawned" << std::endl;
-		enemies.push_back(new Rat());
+Room::Room(bool first_room_flag){
+	if (!first_room_flag) {
+		int enemy_num = std::rand() % 4;
+		std::cout << enemy_num << std::endl;
+		for (int i = 0; i < enemy_num; i++) {
+			enemies.push_back(new Rat());
+		}
 	}
 	bound.setSize(sf::Vector2f(400.f, 400.f));
 	bound.setOutlineThickness(10);
@@ -186,4 +255,51 @@ void RoomBindLR(Room* lhs, Room* rhs){
 void RoomBindUD(Room* up, Room* down){
 	up->SetDown(down);
 	down->SetUp(up);
+}
+
+int& Room::getBulletX() {
+	return bullet_x;
+}
+int& Room::getBulletY() {
+	return bullet_y;
+}
+
+const std::list<Enemy*>& Room::getEnemies() const {
+	return enemies;
+}
+
+void Room::checkAttack() {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		bullet_x = 1;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		bullet_x = -1;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+		bullet_y = -1;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		bullet_y = 1;
+	}
+}
+bool Room::createProjectile(sf::Vector2f& player_pos, int damage) {
+	if (bullet_x != 0 || bullet_y != 0) {
+		player_projectiles.push_back(Projectile(player_pos, damage, bullet_x, bullet_y));
+		std::cout << bullet_x << " " << bullet_y << std::endl;
+		bullet_x = 0;
+		bullet_y = 0;
+		return true;
+	}
+	return false;
+}
+const std::list<Projectile>& Room::getPlayerProjectiles() const {
+	return player_projectiles;
+}
+
+const std::list<Projectile>& Room::getEnemyProjectiles() const {
+	return enemy_projectiles;
+}
+
+const std::list<DeathAnimation>& Room::getDeathAnimations() const {
+	return death_animations;
 }

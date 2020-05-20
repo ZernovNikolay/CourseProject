@@ -3,11 +3,12 @@
 Level::Level(int countRoom){
 	collection.resize(countRoom);
 	for(int i = 0; i < countRoom; i++){
-		collection[i] = (Room*)calloc(1, sizeof(Room));
+		collection[i] = new Room(true);//first_room_flag);//(Room*)calloc(1, sizeof(Room));
+		first_room_flag = false;
 	}
 
 	count = countRoom;
-	Room* gh = new Room;
+	Room* gh = new Room(true);
 
 	int* colorA = (int*)calloc(3, sizeof(int));
 	colorA[0] = 128;
@@ -16,7 +17,7 @@ Level::Level(int countRoom){
 	gh->SetBound(colorA);
 	free(colorA);
 	collection[0] = gh;
-	collection[count - 1] = (Room*)calloc(1, sizeof(Room));
+	collection[count - 1] = new Room(first_room_flag);//(Room*)calloc(1, sizeof(Room));
 }
 
 Level::~Level(){
@@ -27,7 +28,7 @@ Level::~Level(){
 }
 
 void Level::NewRoom(){
-	Room* down1 = new Room;
+	Room* down1 = new Room(first_room_flag);
 
 	int* colorA = (int*)calloc(3, sizeof(int));
 	colorA[0] = 255;
@@ -37,7 +38,7 @@ void Level::NewRoom(){
 	down1->SetBound(colorA);
 	RoomBindUD(collection[0], down1);
 
-	Room* up1 = new Room;
+	Room* up1 = new Room(first_room_flag);
 
 	colorA[0] = 255;
 	colorA[1] = 255;
@@ -46,7 +47,7 @@ void Level::NewRoom(){
 	up1->SetBound(colorA);
 	RoomBindUD(up1, collection[0]);
 
-	Room* left1 = new Room;
+	Room* left1 = new Room(first_room_flag);
 
 	colorA[0] = 0;
 	colorA[1] = 128;
@@ -55,7 +56,7 @@ void Level::NewRoom(){
 
 	RoomBindLR(left1, collection[0]);
 
-	Room* right1 = new Room;
+	Room* right1 = new Room(first_room_flag);
 
 	colorA[0] = 0;
 	colorA[1] = 0;
@@ -64,7 +65,7 @@ void Level::NewRoom(){
 	right1->SetBound(colorA);
 	RoomBindLR(collection[0], right1);
 
-	Room* hui1 = new Room;
+	Room* hui1 = new Room(first_room_flag);
 
 	colorA[0] = 192;
 	colorA[1] = 192;
@@ -136,9 +137,15 @@ void RenderLevel(Person& Our_Hero){
 		for (const auto& enemy : current_room->getEnemies()) {
 			window_H.draw(enemy->GetModel());
 		}
+		for (const auto& player_projectile : current_room->getPlayerProjectiles()) {
+			window_H.draw(player_projectile.getCircleShape());
+		}
+		for (auto& death_animation : current_room->getDeathAnimations()) {
+			window_H.draw(death_animation.getModelC());
+		}
 		window_H.display();
 
-		CheckMoveHero(Our_Hero,current_room);
+		CheckMoveHero(Our_Hero, current_room);
 		CheckPassDoors(flag_keyboardQ, Our_Hero, current_room, window_H);
 		CheckGiveItems(flag_keyboardE, Our_Hero, current_room);
 		WorkWithInventory(flag_keyboardR, Our_Hero, current_room);

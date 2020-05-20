@@ -6,7 +6,7 @@
 #include <iostream>
 #include "object.h"
 
-const float velocity = 0.12;
+const float velocity = 0.24;
 
 class Inventory{
 public:
@@ -59,6 +59,8 @@ public:
 	void UseItem(int number);
 
 	void receiveDamage(int damage);//нанести урон игроку
+
+	int getDamage() const; //getter для damage
 private:
 
 	void SetClass(std::string gh); // установить класс
@@ -71,7 +73,7 @@ private:
 	std::string name;
 	sf::Sprite model_of_hero;
 	std::string name_texture;
-	int damage = 1;
+	int damage = 3;
 
 	Inventory* inventory;
 };
