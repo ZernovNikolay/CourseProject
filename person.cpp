@@ -8,7 +8,19 @@ Person::Person(std::string gh){
 Person::Person(){}
 
 Person::~Person(){
-	std::cout << "Your name is " << name << "\n" << "Your class is " << class_type
+	std::string s;
+	switch (type) {
+	case(class_type::Archer):
+		s = "Archer";
+		break;
+	case(class_type::Warrior):
+		s = "Warrior";
+		break;
+	case(class_type::Mage):
+		s = "Mage";
+		break;
+	}
+	std::cout << "Your name is " << name << "\n" << "Your class is " << s
 			<< "\n" << "Your health is " << health_point << "\n" << "Texture is on file: " << name_texture << std::endl;
 	delete inventory;
 }
@@ -19,27 +31,27 @@ void Person::SetCharacter(std::string gh){
 	}else if(gh == "Archer"){
 		YouAreArcher();
 	}else if(gh == "Rogue"){
-		YouAreRogue();
+		YouAreMage();
 	}
 }
 
 void Person::YouAreWarrior(){
-	SetClass("Warrior");
+	SetClass(class_type::Warrior);
 	SetHP(100);
 }
 
 void Person::YouAreArcher(){
-	SetClass("Archer");
+	SetClass(class_type::Archer);
 	SetHP(70);
 }
 
-void Person::YouAreRogue(){
-	SetClass("Rogue");
+void Person::YouAreMage(){
+	SetClass(class_type::Archer);
 	SetHP(87);
 }
 
-void Person::SetClass(std::string gh){
-	class_type = gh;
+void Person::SetClass(enum class_type ct){
+	type = ct;
 }
 
 void Person::SetHP(int gh){

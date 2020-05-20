@@ -28,6 +28,8 @@ private:
 
 class Person{
 public:
+	enum class_type {Warrior, Mage, Archer};
+
 	Person(std::string gh); // добавить имя для персонажа
 
 	Person();
@@ -40,7 +42,7 @@ public:
 
 	void YouAreArcher(); // сделать лучником
 
-	void YouAreRogue(); // сделать вором
+	void YouAreMage(); // сделать вором
 
 	void SetModel(sf::Sprite new_model); // установить модельку
 
@@ -63,13 +65,14 @@ public:
 	int getDamage() const; //getter для damage
 private:
 
-	void SetClass(std::string gh); // установить класс
+	void SetClass(enum class_type ct); // установить класс
 
 	void SetHP(int gh); // установить хп
 
 
 	int health_point = 10;
-	std::string class_type;
+	//std::string class_type;
+	class_type type;
 	std::string name;
 	sf::Sprite model_of_hero;
 	std::string name_texture;
