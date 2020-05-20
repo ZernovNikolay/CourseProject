@@ -79,7 +79,7 @@ bool Projectile::checkCollision(sf::Vector2f object_pos) {
 	auto cur_pos = getPosition();
 	float xdif = cur_pos.x - object_pos.x,
 		ydif = cur_pos.y - object_pos.y;
-	if (sqrt(xdif * xdif + ydif * ydif) < step)
+	if (sqrt(xdif * xdif + ydif * ydif) < 1.4 * step + 3)
 		return true;
 	return false;
 }
@@ -105,23 +105,25 @@ Projectile::~Projectile() {
 	//std::cout << "Deleted" << std::endl;
 }
 
-sf::Sprite& DeathAnimation::getModel() {
-	return sprite;
-}
-const sf::Sprite& DeathAnimation::getModelC() const {
+
+const sf::Sprite& DeathAnimation::getModel() const {
 	return sprite;
 }
 void DeathAnimation::setModel() {
-	if (!t.texture.loadFromFile(_src_path_ + "Ghost.png"))//"/home/nikolay/Desktop/Eclipse/smfl/src/archer.jpg"))
+	if (!texture.loadFromFile(_src_path_ + "Ghost.png"))//"/home/nikolay/Desktop/Eclipse/smfl/src/archer.jpg"))
 	{
 		std::cout << "Ghost.png not found" << std::endl;
 	}
-	getModel() = sf::Sprite(t.texture);
-	getModel().setScale(0.2, 0.2);
+	sprite = sf::Sprite(texture);
+	sprite.setScale(0.2, 0.2);
 }
 
+/*DeathAnimation::DeathAnimation(const DeathAnimation& rhs) {
+	DeathAnimation(rhs.getModel().getPosition(), rhs.max_tick_count);
+}*/
+
 void DeathAnimation::setPosition(sf::Vector2f pos) {
-	getModel().setPosition(pos);
+	sprite.setPosition(pos);
 }
 
 DeathAnimation::DeathAnimation(sf::Vector2f pos, int max_tick_count) {

@@ -70,7 +70,7 @@ void Room::timeBasedEvents(Person& player) {
 
 	std::set<std::list<Projectile>::iterator> projectiles_to_be_deleted;
 	std::set<std::list<Enemy*>::iterator> enemies_to_be_deleted;
-	std::list<std::list<DeathAnimation>::iterator> death_animations_to_be_erased;
+	std::list<std::list<DeathAnimation*>::iterator> death_animations_to_be_erased;
 	for (const auto& enemy : enemies) {
 		enemy->toMove(player);
 	}
@@ -88,7 +88,7 @@ void Room::timeBasedEvents(Person& player) {
 				if ((*enemy)->receiveDamage(player_projectile->getDamage())) {
 					enemies_to_be_deleted.insert(enemy);
 					death_animations.
-						push_back(DeathAnimation{ (*enemy)->GetPosition(),
+						push_back(new DeathAnimation{ (*enemy)->GetPosition(),
 							death_animation_tick_count });
 				}
 				break;
@@ -106,7 +106,7 @@ void Room::timeBasedEvents(Person& player) {
 
 	for (auto death_animation = death_animations.begin();
 		death_animation != death_animations.end(); death_animation++) {
-		if (death_animation->checkTime()) {
+		if ((*death_animation)->checkTime()) {
 			death_animations_to_be_erased.push_back(death_animation);
 		}
 	}
@@ -300,6 +300,6 @@ const std::list<Projectile>& Room::getEnemyProjectiles() const {
 	return enemy_projectiles;
 }
 
-const std::list<DeathAnimation>& Room::getDeathAnimations() const {
+std::list<DeathAnimation*>& Room::getDeathAnimations() {
 	return death_animations;
 }
