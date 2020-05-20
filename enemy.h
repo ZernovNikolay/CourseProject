@@ -48,22 +48,19 @@ public:
 	~Projectile();
 private:
 	int x_sign = 0, y_sign = 0;
-	sf::CircleShape projectile = sf::CircleShape(5);
+	sf::CircleShape projectile = sf::CircleShape(7);
 	float step = 5;
 	int damage = 0;
 };
 
 class DeathAnimation {
 public:
-	sf::Sprite& getModel();
-	const sf::Sprite& getModelC() const;
+	const sf::Sprite& getModel() const;
 	DeathAnimation(sf::Vector2f pos, int max_tick_count);
 	bool checkTime();
+	//DeathAnimation(const DeathAnimation&);
 private:
-	struct Texture {
-		sf::Texture texture;
-	};
-	Texture t;
+	sf::Texture texture;
 	int cur_tick_count = 0;
 	int max_tick_count = 0;
 	void setPosition(sf::Vector2f);

@@ -12,6 +12,7 @@
 #include <chrono>
 #include <list>
 #include <set>
+#include <utility>
 enum class Ways{
 	Up,
 	Right,
@@ -82,7 +83,7 @@ public:
 	const std::list<Enemy*>& getEnemies() const;
 	const std::list<Projectile>& getPlayerProjectiles() const;
 	const std::list<Projectile>& getEnemyProjectiles() const;
-	const std::list<DeathAnimation>& getDeathAnimations() const;
+	std::list<DeathAnimation*>& getDeathAnimations();
 	int& getBulletX();
 	int& getBulletY();
 	void checkAttack();
@@ -102,7 +103,7 @@ private:
 	std::list <Enemy*> enemies;
 	std::list<Projectile> player_projectiles;
 	std::list<Projectile> enemy_projectiles;
-	std::list<DeathAnimation> death_animations;
+	std::list<DeathAnimation*> death_animations;
 	std::chrono::time_point<std::chrono::steady_clock> current_time
 		= std::chrono::steady_clock::now();
 
