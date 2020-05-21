@@ -7,7 +7,7 @@
 #include <chrono>
 #include "object.h"
 
-const float velocity = 0.24;
+const float velocity = 0.2;
 
 class Inventory{
 public:
