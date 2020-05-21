@@ -4,10 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
-#include <chrono>
 #include "object.h"
 
-const float velocity = 0.24;
+const float velocity = 0.2;
 
 class Inventory{
 public:
@@ -65,13 +64,6 @@ public:
 
 	int getDamage() const; //getter для damage
 private:
-
-	std::chrono::time_point<std::chrono::steady_clock> current_time
-		= std::chrono::steady_clock::now();
-
-	int invul_time_milliseconds = 500;
-
-	bool checkTimer();
 
 	void SetClass(enum class_type ct); // установить класс
 

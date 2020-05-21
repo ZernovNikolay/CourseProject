@@ -71,9 +71,9 @@ void Room::timeBasedEvents(Person& player) {
 	std::set<std::list<Projectile>::iterator> projectiles_to_be_deleted;
 	std::set<std::list<Enemy*>::iterator> enemies_to_be_deleted;
 	std::list<std::list<DeathAnimation*>::iterator> death_animations_to_be_erased;
-	/*for (const auto& enemy : enemies) {
+	for (const auto& enemy : enemies) {
 		enemy->toMove(player);
-	}*/
+	}
 
 	for (auto player_projectile = player_projectiles.begin();
 		player_projectile != player_projectiles.end(); 
@@ -137,7 +137,7 @@ void Room::timeBasedEvents(Person& player) {
 Room::Room(bool first_room_flag){
 	if (!first_room_flag) {
 		int enemy_num = std::rand() % 4;
-		std::cout << enemy_num << std::endl;
+		//std::cout << enemy_num << std::endl;
 		for (int i = 0; i < enemy_num; i++) {
 			enemies.push_back(new Rat());
 		}
@@ -285,7 +285,7 @@ void Room::checkAttack() {
 bool Room::createProjectile(sf::Vector2f& player_pos, int damage) {
 	if (bullet_x != 0 || bullet_y != 0) {
 		player_projectiles.push_back(Projectile(player_pos, damage, bullet_x, bullet_y));
-		std::cout << bullet_x << " " << bullet_y << std::endl;
+		//std::cout << bullet_x << " " << bullet_y << std::endl;
 		bullet_x = 0;
 		bullet_y = 0;
 		return true;
