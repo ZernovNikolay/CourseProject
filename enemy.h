@@ -17,12 +17,12 @@ private:
 	float velocity = 0.35;
 public:
 	int direction_swap_time_milliseconds = 500;
-	bool checkTimer();
+	bool checkTimer(); //проверяет, прошло
 	sf::Vector2f GetPosition() const; // получить местоположение персонажа
 	sf::Sprite& GetModel(); // получить модельку героя
 	void SetPosition(); // установить местоположение для персонажа
-	virtual sf::Vector2f toMove(Person& player) = 0;
-	virtual void toMoveSecondAlgorithm(Person& player, sf::RectangleShape) = 0;
+	virtual sf::Vector2f toMove(Person& player) = 0;// переместить врага (проверяется таймер врага)
+	virtual void toMoveSecondAlgorithm(Person& player, sf::RectangleShape) = 0;//переместить врага
 	bool receiveDamage(int damage);
 };
 
