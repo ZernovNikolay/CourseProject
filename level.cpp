@@ -113,7 +113,7 @@ void RenderLevel(Person& Our_Hero){
 	std::srand(time(nullptr));
 
 	Our_Hero.SetPosition(400.f, 400.f);
-
+	window_H.setFramerateLimit(300);
 	while (window_H.isOpen())
 	{
 		sf::Event event;

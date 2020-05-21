@@ -52,7 +52,7 @@ sf::Vector2f Rat::toMove(Person& player) {
 	float ydist = player_position.y - resPos.y;
 	if (sqrt(xdist * xdist + ydist * ydist) <= step) {
 		player.receiveDamage(damage);
-		std::cout << "got hit" << std::endl;
+		//std::cout << "got hit" << std::endl;
 	}
 	return resPos;
 }
@@ -154,8 +154,13 @@ sf::CircleShape Projectile::getBullet() {
 }
 
 bool Enemy::receiveDamage(int damage) {
-	if ((health_point -= damage) < 0)
-		return true;
+	if (std::chrono::duration_cast<std::chrono::milliseconds>
+		(std::chrono::steady_clock::now() - last_time_being_hit).count() >
+		direction_swap_time_milliseconds) {
+		last_time_being_hit = std::chrono::steady_clock::now();
+		if ((health_point -= damage) < 0)
+			return true;
+	}
 	return false;
 }
 
@@ -191,8 +196,8 @@ DeathAnimation::DeathAnimation(sf::Vector2f pos, int max_tick_count) {
 	setModel();
 	setPosition(pos);
 	this->max_tick_count = max_tick_count;
-	std::cout << "DeathAnimation created " << getModel().getPosition().x <<
-		" " << getModel().getPosition().y << " " << max_tick_count <<std::endl;
+	/*std::cout << "DeathAnimation created " << getModel().getPosition().x <<
+		" " << getModel().getPosition().y << " " << max_tick_count <<std::endl;*/
 }
 
 bool DeathAnimation::checkTime() {

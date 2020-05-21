@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 #include <memory>
-//const std::string _src_path_ = "../src/textures/";
-const std::string _src_path_ = "/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
+const std::string _src_path_ = "../src/textures/";
+//const std::string _src_path_ = "/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
 static sf::Texture texture_weapon;
 static sf::Texture texture_heal;
 static sf::Texture texture_key;

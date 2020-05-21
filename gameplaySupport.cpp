@@ -104,7 +104,7 @@ void CheckButtonRightOnInventory(bool& flagRight, Person& Our_Hero, const sf::Ve
 						std::vector<sf::RectangleShape> choiceItem;
 						choiceItem.resize(3);
 
-						const std::string _src_path_texture = "/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
+						const std::string _src_path_texture = "../src/textures/";//"/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
 
 						const std::vector<std::string> Array_texture_menu = {_src_path_texture + "use.jpg",
 																		_src_path_texture + "drop.jpg",

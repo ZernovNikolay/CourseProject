@@ -124,7 +124,7 @@ int StartMenu(Person& Our_Hero){
 						return 0;
 						}
 					case 2:
-						Our_Hero.SetCharacter("Rogue");
+						Our_Hero.SetCharacter("Mage");
 						return 2;
 				}
 			}
@@ -154,7 +154,7 @@ void CastomizeMenu(Person& Our_Hero, int class_Our_Hero){
 
 	if (!texture.loadFromFile(_src_path_ + "archer.jpg"))
 	{
-	   std::cout << "Pizdec" << std::endl;
+	   std::cout << "Error occured" << std::endl;
 	}
 
 	MenuItem rectangleOK(500, 50, colorW, 150, 400, texture);

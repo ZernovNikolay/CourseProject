@@ -10,6 +10,7 @@ class Enemy {
 private:
 	std::chrono::time_point<std::chrono::steady_clock> current_time
 		= std::chrono::steady_clock::now();
+	std::chrono::time_point<std::chrono::steady_clock> last_time_being_hit = current_time;
 	sf::Sprite enemy_model;
 	virtual void SetModel() = 0; // установить модельку
 	int health_point = 3;
@@ -40,7 +41,7 @@ public:
 	Rat() {
 		SetModel();
 		SetPosition();
-		std::cout << GetPosition().x << " " << GetPosition().y;
+		//std::cout << GetPosition().x << " " << GetPosition().y;
 	}
 	sf::Vector2f toMove(Person& player) override;
 	void toMoveSecondAlgorithm(Person& player, sf::RectangleShape) override;
