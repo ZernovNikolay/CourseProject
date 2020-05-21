@@ -12,17 +12,17 @@ private:
 		= std::chrono::steady_clock::now();
 	std::chrono::time_point<std::chrono::steady_clock> last_time_being_hit = current_time;
 	sf::Sprite enemy_model;
-	virtual void SetModel() = 0; // установить модельку
+	virtual void SetModel() = 0; // СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РјРѕРґРµР»СЊРєСѓ
 	int health_point = 3;
 	float velocity = 0.35;
 public:
 	int direction_swap_time_milliseconds = 500;
-	bool checkTimer(); //проверяет, прошло
-	sf::Vector2f GetPosition() const; // получить местоположение персонажа
-	sf::Sprite& GetModel(); // получить модельку героя
-	void SetPosition(); // установить местоположение для персонажа
-	virtual sf::Vector2f toMove(Person& player) = 0;// переместить врага (проверяется таймер врага)
-	virtual void toMoveSecondAlgorithm(Person& player, sf::RectangleShape) = 0;//переместить врага
+	bool checkTimer(); //РїСЂРѕРІРµСЂСЏРµС‚, РїСЂРѕС€Р»Рѕ
+	sf::Vector2f GetPosition() const; // РїРѕР»СѓС‡РёС‚СЊ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ РїРµСЂСЃРѕРЅР°Р¶Р°
+	sf::Sprite& GetModel(); // РїРѕР»СѓС‡РёС‚СЊ РјРѕРґРµР»СЊРєСѓ РіРµСЂРѕСЏ
+	void SetPosition(); // СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ РґР»СЏ РїРµСЂСЃРѕРЅР°Р¶Р°
+	virtual sf::Vector2f toMove(Person& player) = 0;// РїРµСЂРµРјРµСЃС‚РёС‚СЊ РІСЂР°РіР° (РїСЂРѕРІРµСЂСЏРµС‚СЃСЏ С‚Р°Р№РјРµСЂ РІСЂР°РіР°)
+	virtual void toMoveSecondAlgorithm(Person& player, sf::RectangleShape) = 0;//РїРµСЂРµРјРµСЃС‚РёС‚СЊ РІСЂР°РіР°
 	bool receiveDamage(int damage);
 };
 
