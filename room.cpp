@@ -60,77 +60,75 @@ bool Room::checkTimer() {
 
 void Room::timeBasedEvents(Person& player) {
 
-	auto cur_bound = GetBound();
-	int curbound_right_x = cur_bound.getPosition().x
-		+ cur_bound.getSize().x - cur_bound.getOutlineThickness();
-	int curbound_left_x = cur_bound.getPosition().x;
-	int curbound_bottom_y = cur_bound.getPosition().y
-		+ cur_bound.getSize().y - cur_bound.getOutlineThickness();
-	int curbound_top_y = cur_bound.getPosition().y;
 
 	std::set<std::list<Projectile>::iterator> projectiles_to_be_deleted;
 	std::set<std::list<Enemy*>::iterator> enemies_to_be_deleted;
 	std::list<std::list<DeathAnimation*>::iterator> death_animations_to_be_erased;
-	for (const auto& enemy : enemies) {
-		enemy->toMove(player);
-	}
 
-	for (auto player_projectile = player_projectiles.begin();
-		player_projectile != player_projectiles.end(); 
-		player_projectile++) {
 
-		player_projectile->toMove();
+	moveProjectiles(projectiles_to_be_deleted, enemies_to_be_deleted);
+	checkDeathAnimations(death_animations_to_be_erased);
 
-		for (auto enemy = enemies.begin();
-			enemy != enemies.end(); enemy++) {
-			if (player_projectile->checkCollision((*enemy)->GetPosition())) {
-				projectiles_to_be_deleted.insert(player_projectile);
-				if ((*enemy)->receiveDamage(player_projectile->getDamage())) {
-					enemies_to_be_deleted.insert(enemy);
-					death_animations.
-						push_back(new DeathAnimation{ (*enemy)->GetPosition(),
-							death_animation_tick_count });
-				}
-				break;
-			}
-		}
-
-		auto pp_pos = player_projectile->getPosition();
-		int pp_x = pp_pos.x, pp_y = pp_pos.y;
-		if (pp_x <= curbound_left_x || pp_x >= curbound_right_x
-			|| pp_y <= curbound_top_y || pp_y >= curbound_bottom_y) {
-			projectiles_to_be_deleted.insert(player_projectile);
-		}
-
-	}
-
-	for (auto death_animation = death_animations.begin();
-		death_animation != death_animations.end(); death_animation++) {
-		if ((*death_animation)->checkTime()) {
-			death_animations_to_be_erased.push_back(death_animation);
-		}
-	}
-
-	for (auto& it : death_animations_to_be_erased) {
+	/*for (auto& it : death_animations_to_be_erased) {
+		delete *it;
 		death_animations.erase(it);
 	}
-
 	for (auto& it : projectiles_to_be_deleted) {
+		//it;
 		player_projectiles.erase(it);
 	}
-
 	for (auto& it : enemies_to_be_deleted) {
+		delete *it;
 		enemies.erase(it);
-	}
-
+	}*/
 	if (attack_cur_timedif % attack_generating_timedif == 0) {
+		if (beam_flag) {
+			beam = sf::ConvexShape();
+			beam_flag = false;
+			attack_dir_x = 0;
+			attack_dir_y = 0;
+			//std::cout << beam.getPointCount() << std::endl;
+		}
 		checkAttack();
 		sf::Vector2f player_pos = player.GetPosition();
-		if (createProjectile(player_pos, player.getDamage()))
-			attack_cur_timedif = 1;
+		switch (player.getClassType()) {
+			case Person::Archer:
+				if (createProjectile(player_pos, player.getDamage()))
+					attack_cur_timedif = 1;
+				break;
+			case Person::Mage:
+				if (beam_generation_current_timer % beam_generation_time_coef <= 25) {
+					if (attack_dir_x || attack_dir_y) {
+						generateBeam(player, enemies_to_be_deleted);
+						/*if (generateBeam(player))
+							attack_cur_timedif = 1;*/
+						beam_flag = true;
+						beam_generation_current_timer++;
+						attack_dir_x = 0;
+						attack_dir_y = 0;
+					}
+				}
+				else {
+					beam_generation_current_timer++;
+				}
+				break;
+		}
 	}
 	else {
 		attack_cur_timedif++;
+	}
+
+	for (auto& it : death_animations_to_be_erased) {
+		delete* it;
+		death_animations.erase(it);
+	}
+	for (auto& it : projectiles_to_be_deleted) {
+		//it;
+		player_projectiles.erase(it);
+	}
+	for (auto& it : enemies_to_be_deleted) {
+		delete* it;
+		enemies.erase(it);
 	}
 }
 
@@ -258,10 +256,10 @@ void RoomBindUD(Room* up, Room* down){
 }
 
 int& Room::getBulletX() {
-	return bullet_x;
+	return attack_dir_x;
 }
 int& Room::getBulletY() {
-	return bullet_y;
+	return attack_dir_y;
 }
 
 const std::list<Enemy*>& Room::getEnemies() const {
@@ -270,24 +268,25 @@ const std::list<Enemy*>& Room::getEnemies() const {
 
 void Room::checkAttack() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		bullet_x = 1;
+		attack_dir_x = 1;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		bullet_x = -1;
+		attack_dir_x = -1;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		bullet_y = -1;
+		attack_dir_y = -1;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		bullet_y = 1;
+		attack_dir_y = 1;
 	}
 }
 bool Room::createProjectile(sf::Vector2f& player_pos, int damage) {
-	if (bullet_x != 0 || bullet_y != 0) {
-		player_projectiles.push_back(Projectile(player_pos, damage, bullet_x, bullet_y));
-		//std::cout << bullet_x << " " << bullet_y << std::endl;
-		bullet_x = 0;
-		bullet_y = 0;
+	if (attack_dir_x != 0 || attack_dir_y != 0) {
+		player_projectiles.push_back(Projectile(player_pos, damage, 
+			attack_dir_x, attack_dir_y));
+		//std::cout << attack_dir_x << " " << attack_dir_y << std::endl;
+		attack_dir_x = 0;
+		attack_dir_y = 0;
 		return true;
 	}
 	return false;
@@ -303,3 +302,153 @@ const std::list<Projectile>& Room::getEnemyProjectiles() const {
 std::list<DeathAnimation*>& Room::getDeathAnimations() {
 	return death_animations;
 }
+
+void Room::moveProjectiles(std::set<std::list<Projectile>::iterator>& projectiles_to_be_deleted,
+		std::set<std::list<Enemy*>::iterator>& enemies_to_be_deleted) {
+	auto cur_bound = GetBound();
+	int curbound_right_x = cur_bound.getPosition().x
+		+ cur_bound.getSize().x - cur_bound.getOutlineThickness();
+	int curbound_left_x = cur_bound.getPosition().x;
+	int curbound_bottom_y = cur_bound.getPosition().y
+		+ cur_bound.getSize().y - cur_bound.getOutlineThickness();
+	int curbound_top_y = cur_bound.getPosition().y;
+	for (auto player_projectile = player_projectiles.begin();
+		player_projectile != player_projectiles.end();
+		player_projectile++) {
+
+		player_projectile->toMove();
+
+		for (auto enemy = enemies.begin();
+			enemy != enemies.end(); enemy++) {
+			if (player_projectile->checkCollision((*enemy)->GetPosition())) {
+				projectiles_to_be_deleted.insert(player_projectile);
+				if ((*enemy)->receiveDamage(player_projectile->getDamage())) {
+					enemies_to_be_deleted.insert(enemy);
+					death_animations.
+						push_back(new DeathAnimation{ (*enemy)->GetPosition(),
+							death_animation_tick_count });
+				}
+				break;
+			}
+		}
+
+		auto pp_pos = player_projectile->getPosition();
+		int pp_x = pp_pos.x, pp_y = pp_pos.y;
+		if (pp_x <= curbound_left_x || pp_x >= curbound_right_x
+			|| pp_y <= curbound_top_y || pp_y >= curbound_bottom_y) {
+			projectiles_to_be_deleted.insert(player_projectile);
+		}
+
+	}
+}
+
+void Room::checkDeathAnimations(std::list<std::list<DeathAnimation*>::iterator>&
+	death_animations_to_be_erased) {
+	for (auto death_animation = death_animations.begin();
+		death_animation != death_animations.end(); death_animation++) {
+		if ((*death_animation)->checkTime()) {
+			death_animations_to_be_erased.push_back(death_animation);
+		}
+	}
+}
+
+bool Room::generateBeam(Person& player, 
+	std::set<std::list<Enemy*>::iterator>& enemies_to_be_deleted) {
+	int ray_num = 10;
+	beam = sf::ConvexShape(ray_num * 2);
+	float left_bound = GetBound().getPosition().x;
+	float right_bound = left_bound + GetBound().getSize().x;
+	float top_bound = GetBound().getPosition().y;
+	float bot_bound = top_bound + GetBound().getSize().y;
+
+	auto find_bound = [right_bound, left_bound, top_bound, bot_bound]
+	(float x, float y, int x_dir, int y_dir) {
+		while ((x >= left_bound && x <= right_bound) && (y >= top_bound && y <= bot_bound)) {
+			x += x_dir;
+			y += y_dir;
+		}
+		return sf::Vector2f(x, y);
+	};
+
+	sf::Vector2u texture_size_unscaled = player.GetModel().getTexture()->getSize();
+	sf::Vector2f texture_size{ texture_size_unscaled.x * player.GetModel().getScale().x,
+		texture_size_unscaled.y * player.GetModel().getScale().y };
+	//std::cout << "texture size is " << texture_size.x << " " << texture_size.y << std::endl;
+	float texture_size_module = sqrt(texture_size.x * texture_size.x +
+		texture_size.y * texture_size.y);
+	float size_module = (attack_dir_x == attack_dir_y != 0) ? texture_size_module / 1.4 : texture_size_module;
+	//10 / 1.4 : 10;
+
+
+	float x_start_middle = player.GetPosition().x + texture_size.x / 2;// + attack_dir_x * 10;//texture_size.x;
+	float y_start_middle = player.GetPosition().y + texture_size.y / 2;// + attack_dir_y * 10;//texture_size.y;*/ 
+	sf::Vector2f normal(-attack_dir_y, attack_dir_x);
+	sf::Vector2f right_start(x_start_middle + normal.x * size_module,
+		y_start_middle + normal.y * size_module);
+	sf::Vector2f left_start{ x_start_middle - normal.x * size_module / 2,
+		y_start_middle - normal.y * size_module / 2 };
+	//std::cout << "left start is " << left_start.x << " " << left_start.y << std::endl;
+	sf::Vector2f mid_start(x_start_middle, y_start_middle);
+
+	std::vector<sf::Vector2f> vertices(ray_num);
+	for (int i = 0; i < ray_num; i++) {
+		sf::Vector2f vertice{ left_start.x + i * normal.x * size_module / ray_num,
+			left_start.y + i * normal.y * size_module / ray_num };
+		vertices[i] = vertice;
+		//std::cout << vertices[i].x << " " << vertices[i].y << std::endl;
+	}
+	for (int i = ray_num - 1; i >= 0; i--) {
+		vertices.push_back(find_bound(vertices[i].x, vertices[i].y, attack_dir_x, attack_dir_y));
+		auto test = find_bound(vertices[i].x, vertices[i].y, attack_dir_x, attack_dir_y);
+		//std::cout << test.x << " " << test.y << std::endl;
+	}
+	//sf::Vector2f right
+	//beam.setPointCount(ray_num * 2 - 1);
+	for (int i = 0; i < ray_num * 2; i++) {
+		beam.setPoint(i, vertices[i]);
+		//std::cout << i << std::endl;
+	}
+	beam.setFillColor(sf::Color::Cyan);
+
+	auto vector_multiplication_sign = []
+	(sf::Vector2f line_first_point, sf::Vector2f line_second_point,
+		sf::Vector2f enemy_pos) {
+		float line_x = line_second_point.x - line_first_point.x;
+		float line_y = line_second_point.y - line_first_point.y;
+		float enemy_line_x = enemy_pos.x - line_first_point.x;
+		float enemy_line_y = enemy_pos.y - line_first_point.y;
+		return std::signbit(line_x * enemy_line_y - line_y * enemy_line_x);
+		//return sf::Vector2f(x, y);
+	};
+
+	sf::Vector2f right_bot_point = beam.getPoint(ray_num - 1);
+	sf::Vector2f right_top_point = beam.getPoint(ray_num);
+	sf::Vector2f left_top_point = beam.getPoint(2 * ray_num - 1);
+	sf::Vector2f left_bot_point = beam.getPoint(0);
+
+	for (auto enemy_it = enemies.begin();
+		enemy_it != enemies.end(); enemy_it++) {
+		sf::Vector2f enemy_pos = (*enemy_it)->GetPosition();
+		if (vector_multiplication_sign(right_bot_point, right_top_point, enemy_pos)
+			!= vector_multiplication_sign(left_bot_point, left_top_point, enemy_pos)) {
+			if ((*enemy_it)->receiveDamage(player.getDamage())) {
+				enemies_to_be_deleted.insert(enemy_it);
+				death_animations.
+					push_back(new DeathAnimation{ (*enemy_it)->GetPosition(),
+						death_animation_tick_count });
+			}
+		}
+	}
+	//attack_dir_x = 0;
+	//attack_dir_y = 0;
+	return true;
+}
+
+const sf::ConvexShape Room::getBeam() const {
+	return beam;
+}
+
+bool Room::getBeamFlag() const {
+	return beam_flag;
+}
+

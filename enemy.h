@@ -1,40 +1,49 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "person.h"
-#include <cmath>
 #include <ctime>
+#include <chrono>
 #include <list>
 const float ROOM_SIZE = 400;
 //const std::string _src_path_ = "../src/textures/";
-//const std::string _src_path_ = "/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
 class Enemy {
 private:
+	std::chrono::time_point<std::chrono::steady_clock> current_time
+		= std::chrono::steady_clock::now();
 	sf::Sprite enemy_model;
-	virtual void SetModel() = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	virtual void SetModel() = 0; // установить модельку
 	int health_point = 3;
+	float velocity = 0.35;
 public:
-	sf::Vector2f GetPosition() const; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
-	sf::Sprite& GetModel(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
-	void SetPosition(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	int direction_swap_time_milliseconds = 500;
+	bool checkTimer();
+	sf::Vector2f GetPosition() const; // получить местоположение персонажа
+	sf::Sprite& GetModel(); // получить модельку героя
+	void SetPosition(); // установить местоположение для персонажа
 	virtual sf::Vector2f toMove(Person& player) = 0;
+	virtual void toMoveSecondAlgorithm(Person& player, sf::RectangleShape) = 0;
 	bool receiveDamage(int damage);
 };
 
 class Rat : public Enemy{
+	float velocity = 0.35;
 	int health_point = 3;
 	const int damage = 1;
 	const float step = 3;
 	int step_count = 0;
 	sf::Texture texture;
 	void SetModel() override;
+	sf::Vector2f direction_vector;
 	~Rat();
+	void setDirVector(Person& player);
 public:
 	Rat() {
 		SetModel();
 		SetPosition();
-		//std::cout << GetPosition().x << " " << GetPosition().y;
+		std::cout << GetPosition().x << " " << GetPosition().y;
 	}
 	sf::Vector2f toMove(Person& player) override;
+	void toMoveSecondAlgorithm(Person& player, sf::RectangleShape) override;
 };
 
 class Projectile {
@@ -60,7 +69,6 @@ public:
 	const sf::Sprite& getModel() const;
 	DeathAnimation(sf::Vector2f pos, int max_tick_count);
 	bool checkTime();
-	//DeathAnimation(const DeathAnimation&);
 private:
 	sf::Texture texture;
 	int cur_tick_count = 0;

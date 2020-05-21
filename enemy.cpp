@@ -7,6 +7,8 @@ sf::Vector2f Enemy::GetPosition() const {
 sf::Sprite& Enemy::GetModel() {
 	return enemy_model;
 }
+
+
 void Enemy::SetPosition() {
 	const float room_middle_coordinate = ROOM_SIZE / 2;
 	//std::srand(unsigned(std::time(0)));
@@ -18,6 +20,16 @@ void Enemy::SetPosition() {
 
 	enemy_model.setPosition(x, y);
 	//std::cout << "setpos" << x << " " << y << std::endl;
+}
+
+bool Enemy::checkTimer() {
+	if (std::chrono::duration_cast<std::chrono::milliseconds>
+		(std::chrono::steady_clock::now() - current_time).count() >
+			direction_swap_time_milliseconds) {
+		current_time = std::chrono::steady_clock::now();
+		return true;
+	}
+	return false;
 }
 
 sf::Vector2f Rat::toMove(Person& player) {
@@ -56,6 +68,59 @@ void Rat::SetModel() {
 
 Rat::~Rat() {
 	std::cout << "rat died" << this->health_point << std::endl;
+}
+
+
+void Rat::toMoveSecondAlgorithm(Person& player, sf::RectangleShape bounds) {
+	auto player_position = player.GetPosition();
+	sf::Vector2f ratPos = GetPosition();
+	float rat_x = ratPos.x, rat_y = ratPos.y;
+	float new_rat_x = ratPos.x + direction_vector.x * velocity;
+	float new_rat_y = ratPos.y + direction_vector.y * velocity;
+	if (new_rat_x <= bounds.getPosition().x || new_rat_x >=
+		bounds.getPosition().x + bounds.getSize().x) {
+		new_rat_x = ratPos.x;
+		direction_vector.x = -direction_vector.x;
+	}
+	if (new_rat_y <= bounds.getPosition().y || new_rat_y >=
+		bounds.getPosition().y + bounds.getSize().y) {
+		new_rat_y = ratPos.y;
+		direction_vector.y = -direction_vector.y;
+	}
+	GetModel().setPosition(new_rat_x, 
+		new_rat_y);
+	if (checkTimer()) {
+		setDirVector(player);
+	}
+}
+
+void Rat::setDirVector(Person& player) {
+	float x = 0, y = 0;
+	sf::Vector2f ratPos = GetPosition();
+	float rat_x = ratPos.x, rat_y = ratPos.y, 
+		p_x = player.GetPosition().x, p_y = player.GetPosition().y;
+	x = p_x - rat_x;
+	y = p_y - rat_y;
+	float module = sqrt(x * x + y * y);
+	x /= module;
+	y /= module;
+	if (step_count++ % 10 == 0) {
+		if (std::rand() % 2 == 0) {
+			float tempx = x;
+			x = y;
+			y = -tempx;
+		}
+		else {
+			float tempy = y;
+			y = x;
+			x = -tempy;
+		}
+	}
+	direction_vector.x = x;
+	direction_vector.y = y;
+	if (module <= velocity * 100) {
+		player.receiveDamage(damage);
+	}
 }
 
 void Projectile::toMove() {
@@ -117,10 +182,6 @@ void DeathAnimation::setModel() {
 	sprite = sf::Sprite(texture);
 	sprite.setScale(0.2, 0.2);
 }
-
-/*DeathAnimation::DeathAnimation(const DeathAnimation& rhs) {
-	DeathAnimation(rhs.getModel().getPosition(), rhs.max_tick_count);
-}*/
 
 void DeathAnimation::setPosition(sf::Vector2f pos) {
 	sprite.setPosition(pos);
