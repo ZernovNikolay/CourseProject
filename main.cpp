@@ -97,7 +97,6 @@ int main()
 	std::cin >> name;
 	Person Our_Hero(name);
 	int gh = StartMenu(Our_Hero);
-	std::cout << gh << std::endl;
 	CastomizeMenu(Our_Hero, gh);
 	RenderLevel(Our_Hero);
 

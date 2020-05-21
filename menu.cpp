@@ -1,6 +1,6 @@
 #include "menu.h"
 #include <vector>
-//#include <filesystem>
+#include <filesystem>
 
 MenuItem::MenuItem(float length, float high, int* color, float x, float y, const sf::Texture& texture){
 	item.setSize(sf::Vector2f(length, high));
@@ -75,9 +75,9 @@ int StartMenu(Person& Our_Hero){
 
 	sf::Texture texture3;
 
-	if (!texture3.loadFromFile(_src_path_ + "mage.jpg"))
+	if (!texture3.loadFromFile(_src_path_ + "rogue.jpg"))
 	{
-	   std::cout << "Mage.jpg not found" << std::endl;
+	   std::cout << "Rogue.jpg not found" << std::endl;
 	}
 
 	MenuItem rectangleR(500, 50, colorR, 150, 400, texture3);
@@ -203,7 +203,6 @@ void CastomizeMenu(Person& Our_Hero, int class_Our_Hero){
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 			if(flagM == 0){
 				if(rectangleOK.Check(pixelPos.x, pixelPos.y)){
-					Array_sprite[flag].setScale(0.03f, 0.03f);
 					Our_Hero.SetModel(Array_sprite[flag]);
 					Our_Hero.SetTexture(Archer_textures[flag]);//не арчер а универсальный
 					return;

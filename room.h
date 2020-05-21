@@ -88,11 +88,25 @@ public:
 	int& getBulletY();
 	void checkAttack();
 	bool createProjectile(sf::Vector2f& player_pos, int damage);
+	const sf::ConvexShape getBeam() const;
+	bool getBeamFlag() const;
 private:
-	int attack_generating_timedif = 10;
+
+	void moveProjectiles(std::set<std::list<Projectile>::iterator>& projectiles_to_be_deleted,
+		std::set<std::list<Enemy*>::iterator>& enemies_to_be_deleted);
+	void checkDeathAnimations(std::list<std::list<DeathAnimation*>::iterator>&
+		 death_animations_to_be_erased);
+	bool generateBeam(Person& player, 
+		std::set<std::list<Enemy*>::iterator>& enemies_to_be_deleted);
+
+	bool beam_flag = false; 
+	int beam_generation_time_coef = 50; // time between attacks multiplies on it to find time between beam attacks
+	int beam_generation_current_timer = beam_generation_time_coef;
+	sf::ConvexShape beam;
+	int attack_generating_timedif = 20;
 	int attack_cur_timedif = 0;
-	int bullet_x = 0;
-	int bullet_y = 0;
+	int attack_dir_x = 0;
+	int attack_dir_y = 0;
 	sf::RectangleShape bound;
 	std::vector<Door*> door = {};
 	std::vector<std::shared_ptr<Object>> items = {};

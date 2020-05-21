@@ -104,23 +104,12 @@ void CheckButtonRightOnInventory(bool& flagRight, Person& Our_Hero, const sf::Ve
 						std::vector<sf::RectangleShape> choiceItem;
 						choiceItem.resize(3);
 
-						const std::string _src_path_texture = "/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
-
-						const std::vector<std::string> Array_texture_menu = {_src_path_texture + "use.jpg",
-																		_src_path_texture + "drop.jpg",
-																		_src_path_texture + "inform.jpg"};
-
-						std::vector<sf::Texture> Array_sprite_menu;
-						Array_sprite_menu.resize(Array_texture_menu.size());
-
 						for(size_t j = 0; j < 3; j++){
-							Array_sprite_menu[j].loadFromFile(Array_texture_menu[j]);
 							choiceItem[j].setSize(sf::Vector2f(80, 15));
 							choiceItem[j].setPosition(sf::Vector2f(20, 15 + j*28));
-							choiceItem[j].setTexture(&Array_sprite_menu[j]);
-							/*choiceItem[j].setOutlineThickness(3);
+							choiceItem[j].setOutlineThickness(3);
 							choiceItem[j].setOutlineColor(sf::Color(0, 0, 0));
-							choiceItem[j].setFillColor(sf::Color(255, 255, 255));*/
+							choiceItem[j].setFillColor(sf::Color(255, 255, 255));
 						}
 
 						/*std::vector<MenuItem> choice;
@@ -152,7 +141,7 @@ void CheckButtonRightOnInventory(bool& flagRight, Person& Our_Hero, const sf::Ve
 
 							if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 								if(flagLI == 0){
-									int command = 0;
+									int command;
 									for(size_t gh = 0; gh < 3; gh++){
 										if(pixelPosI.x > choiceItem[gh].getPosition().x &&
 												pixelPosI.x < choiceItem[gh].getPosition().x + choiceItem[gh].getSize().x &&

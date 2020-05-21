@@ -111,6 +111,7 @@ void RenderLevel(Person& Our_Hero){
 	bool flag_keyboardR = true;
 
 	std::srand(time(nullptr));
+
 	Our_Hero.SetPosition(400.f, 400.f);
 
 	while (window_H.isOpen())
@@ -134,6 +135,7 @@ void RenderLevel(Person& Our_Hero){
 		}
 		window_H.draw(Our_Hero.GetModel());
 		for (const auto& enemy : current_room->getEnemies()) {
+			enemy->toMoveSecondAlgorithm(Our_Hero, current_room->GetBound());
 			window_H.draw(enemy->GetModel());
 		}
 		for (const auto& player_projectile : current_room->getPlayerProjectiles()) {
@@ -142,6 +144,11 @@ void RenderLevel(Person& Our_Hero){
 		for (auto& death_animation : current_room->getDeathAnimations()) {
 			window_H.draw(death_animation->getModel());
 		}
+		if (current_room->getBeamFlag()) {
+			window_H.draw(current_room->getBeam());
+			//std::cout << current_room->getBeam().getPointCount() << std::endl;
+		}
+
 		window_H.display();
 
 		CheckMoveHero(Our_Hero, current_room);
