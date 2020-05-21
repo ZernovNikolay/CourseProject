@@ -111,7 +111,6 @@ void RenderLevel(Person& Our_Hero){
 	bool flag_keyboardR = true;
 
 	std::srand(time(nullptr));
-
 	Our_Hero.SetPosition(400.f, 400.f);
 
 	while (window_H.isOpen())
@@ -135,7 +134,6 @@ void RenderLevel(Person& Our_Hero){
 		}
 		window_H.draw(Our_Hero.GetModel());
 		for (const auto& enemy : current_room->getEnemies()) {
-			enemy->toMoveSecondAlgorithm(Our_Hero, current_room->GetBound());
 			window_H.draw(enemy->GetModel());
 		}
 		for (const auto& player_projectile : current_room->getPlayerProjectiles()) {

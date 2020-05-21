@@ -4,6 +4,8 @@
 #include "person.h"
 #include "room.h"
 
+void CheckGiveItems(bool& flag_keyboardE, Person& Our_Hero, Room*& current_room);
+
 int CheckItems(const std::vector<std::shared_ptr<Object>>& gh, const Person& Our_Hero);
 
 bool CheckItem(const std::shared_ptr<Object>& item, const Person& Our_Hero);
