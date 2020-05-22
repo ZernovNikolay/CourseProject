@@ -29,10 +29,4 @@ private:
 
 void RenderLevel(Person& Our_Hero); // сделать и прорисовывать уровень
 
-int CheckItems(const std::vector<std::shared_ptr<Object>>& gh, const Person& Our_Hero);
-
-bool CheckItem(const std::shared_ptr<Object>& gh, const Person& Our_Hero);
-
-void ShowInventory(Person& Our_Hero, Room* current_room);
-
 #endif /* LEVEL_H_ */
