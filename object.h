@@ -15,23 +15,23 @@ void LoadTextures();
 class Object{
 public:
 
-	Object(const std::string& name);
+	Object(const std::string& name); //создать объект
 
-	virtual ~Object();
+	virtual ~Object(); //виртуальный деструктор
 
-	virtual void SetPosition(float x, float y) = 0;
+	virtual void SetPosition(float x, float y) = 0; //Установить положение предмета
 
-	virtual sf::Vector2f GetPosition() const = 0;
+	virtual sf::Vector2f GetPosition() const = 0; //Получить положение предмета
 
-	virtual sf::Sprite GetBound() const = 0;
+	virtual sf::Sprite GetBound() const = 0; //Получить текстуру
 
-	virtual std::string GetName() const = 0;
+	virtual std::string GetName() const = 0; //Получить имя объекта
 
-	virtual int GetStats() const = 0;
+	virtual int GetStats() const = 0; //Получить статы предмета
 
-	std::string GetType() const;
+	std::string GetType() const; //Получить тип предмета
 
-	int GetTypeInt() const;
+	int GetTypeInt() const; //Получить тип предмета
 
 private:
 	std::string type;
@@ -45,7 +45,7 @@ public:
 
 	void SetPosition(float x, float y) override; // переместить оружие
 
-	sf::Vector2f GetPosition() const override;
+	sf::Vector2f GetPosition() const override; //получить местоположение
 
 	sf::Sprite GetBound() const override; // получить модельку оружия
 
