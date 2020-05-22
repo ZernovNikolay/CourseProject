@@ -99,16 +99,16 @@ public:
 	Room* toDown() const; // получить комнату снизу
 	bool checkTimer(); // проверить, прошло ли timedif с предыдущей проверки (используется для регулировки поведения врагов и снарядов)
 	void timeBasedEvents(Person& player);//смещение проджектайлов, врагов, прием атак игрока
-	const std::list<Enemy*>& getEnemies() const;
-	const std::list<Projectile>& getPlayerProjectiles() const;
-	const std::list<Projectile>& getEnemyProjectiles() const;
-	std::list<DeathAnimation*>& getDeathAnimations();
-	int& getBulletX();
-	int& getBulletY();
-	void checkAttack();
-	bool createProjectile(sf::Vector2f& player_pos, int damage);
-	const sf::ConvexShape getBeam() const;
-	bool getBeamFlag() const;
+const std::list<Enemy*>& getEnemies() const;//вернуть массив врагов
+	const std::list<Projectile>& getPlayerProjectiles() const;// вернуть массив снарядов игрока
+	const std::list<Projectile>& getEnemyProjectiles() const;//вернуть массив снарядов врага
+	std::list<DeathAnimation*>& getDeathAnimations();//вернуть массив анимаций смерти
+	int& getBulletX();//возвращаем направление движения пули по горизонтали
+	int& getBulletY();//возвращаем направление движения пули по вертикали
+	void checkAttack();//в зависимости от нажатия стрелочек на клавиатуре выбирается направление атаки
+	bool createProjectile(sf::Vector2f& player_pos, int damage);//создаем снаряд (игрока)
+	const sf::ConvexShape getBeam() const;//возвращаем луч (для отрисовки)
+	bool getBeamFlag() const;//true если можно рисовать луч
 private:
 
 	void moveProjectiles(std::set<std::list<Projectile>::iterator>& projectiles_to_be_deleted,
