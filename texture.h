@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-const std::string _src_path_texture = "../src/textures/";
-//const std::string _src_path_texture = "/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
+//const std::string _src_path_texture = "../src/textures/";
+const std::string _src_path_texture = "/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
 
 const std::vector<std::string> Archer_textures = { _src_path_texture + "archer1.png",
 												_src_path_texture + "archer2.png"};

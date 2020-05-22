@@ -215,8 +215,9 @@ bool operator< (const std::list<Projectile>::iterator& lhs,
 	float lhsx = lhs_pos.x, lhsy = lhs_pos.y;
 	float rhsx = rhs_pos.x, rhsy = rhs_pos.y;
 	if (lhsx < rhsx)
-		if (lhsy < rhsy)
-			return true;
+		return true;
+	if (lhsy < rhsy)
+		return true;
 	return false;
 }
 
@@ -228,7 +229,8 @@ bool operator< (const std::list<Enemy*>::iterator& lhs,
 	float lhsx = lhs_pos.x, lhsy = lhs_pos.y;
 	float rhsx = rhs_pos.x, rhsy = rhs_pos.y;
 	if (lhsx < rhsx)
-		if (lhsy < rhsy)
-			return true;
+		return true;
+	if (lhsy < rhsy)
+		return true;
 	return false;
 }

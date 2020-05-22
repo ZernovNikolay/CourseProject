@@ -4,6 +4,10 @@
 #include "person.h"
 #include "room.h"
 
+bool CheckWall(const Wall* wall, float x, float y);
+
+bool CheckWalls(const std::vector<Wall*> walls, float x, float y);
+
 void CheckGiveItems(bool& flag_keyboardE, Person& Our_Hero, Room*& current_room);
 
 int CheckItems(const std::vector<std::shared_ptr<Object>>& gh, const Person& Our_Hero);

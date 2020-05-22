@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "person.h"
 #include <ctime>
+#include <cmath>
 #include <chrono>
 #include <list>
 const float ROOM_SIZE = 400;
@@ -12,17 +13,17 @@ private:
 		= std::chrono::steady_clock::now();
 	std::chrono::time_point<std::chrono::steady_clock> last_time_being_hit = current_time;
 	sf::Sprite enemy_model;
-	virtual void SetModel() = 0; // установить модельку
+	virtual void SetModel() = 0; // ���������� ��������
 	int health_point = 3;
 	float velocity = 0.35;
 public:
 	int direction_swap_time_milliseconds = 500;
-	bool checkTimer(); //проверяет, прошло
-	sf::Vector2f GetPosition() const; // получить местоположение персонажа
-	sf::Sprite& GetModel(); // получить модельку героя
-	void SetPosition(); // установить местоположение для персонажа
-	virtual sf::Vector2f toMove(Person& player) = 0;// переместить врага (проверяется таймер врага)
-	virtual void toMoveSecondAlgorithm(Person& player, sf::RectangleShape) = 0;//переместить врага
+	bool checkTimer();
+	sf::Vector2f GetPosition() const; // �������� �������������� ���������
+	sf::Sprite& GetModel(); // �������� �������� �����
+	void SetPosition(); // ���������� �������������� ��� ���������
+	virtual sf::Vector2f toMove(Person& player) = 0;
+	virtual void toMoveSecondAlgorithm(Person& player, sf::RectangleShape) = 0;
 	bool receiveDamage(int damage);
 };
 

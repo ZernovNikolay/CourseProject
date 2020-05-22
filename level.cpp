@@ -85,6 +85,7 @@ void Level::NewRoom(){
 	collection[0]->SetHeal(200, 250, 100, "Healing Salve");
 	collection[0]->SetKey(250, 280, 3);
 	collection[0]->GetDoors()[0]->SetClose(3);
+	collection[0]->SetWall(100, 20, 100, 30);
 }
 
 sf::RectangleShape Level::GetBegin(){
@@ -126,6 +127,9 @@ void RenderLevel(Person& Our_Hero){
 		window_H.draw(current_room->GetBound());
 		for(size_t i = 0; i < current_room->GetDoors().size(); i++){
 			window_H.draw(current_room->GetDoors()[i]->GetBound());
+		}
+		for(size_t i = 0; i < current_room->GetWalls().size(); i++){
+			window_H.draw(current_room->GetWalls()[i]->GetBound());
 		}
 		for(size_t i = 0; i < current_room->GetObjects().size(); i++){
 			window_H.draw(current_room->GetObjects()[i]->GetBound());
