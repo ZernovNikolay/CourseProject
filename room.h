@@ -112,11 +112,11 @@ const std::list<Enemy*>& getEnemies() const;//вернуть массив вра
 private:
 
 	void moveProjectiles(std::set<std::list<Projectile>::iterator>& projectiles_to_be_deleted,
-		std::set<std::list<Enemy*>::iterator>& enemies_to_be_deleted);
+		std::set<std::list<Enemy*>::iterator>& enemies_to_be_deleted);//перемещаем снаряды (вызывем у них toMove)
 	void checkDeathAnimations(std::list<std::list<DeathAnimation*>::iterator>&
-		 death_animations_to_be_erased);
+		 death_animations_to_be_erased);//проверяем, какие анимации смерти пора удалить
 	bool generateBeam(Person& player, 
-		std::set<std::list<Enemy*>::iterator>& enemies_to_be_deleted);
+		std::set<std::list<Enemy*>::iterator>& enemies_to_be_deleted);//создаем луч (заполняем beam точками и устанавливаем флаг beam_flag = true, наносим урон)
 
 	bool beam_flag = false; 
 	int beam_generation_time_coef = 50; // time between attacks multiplies on it to find time between beam attacks
