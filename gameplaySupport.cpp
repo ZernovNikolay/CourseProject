@@ -1,5 +1,26 @@
 #include "gameplaySupport.h"
 
+bool CheckWall(const Wall* wall, float x, float y){
+	bool Yline = y > wall->GetBound().getPosition().y + wall->GetBound().getSize().y ||
+			y + 20 < wall->GetBound().getPosition().y;
+	bool Xline = x > wall->GetBound().getPosition().x + wall->GetBound().getSize().x ||
+			x + 10 < wall->GetBound().getPosition().x;
+	if(Yline || Xline){
+		return false;
+	}else{
+		return true;
+	}
+}
+
+bool CheckWalls(const std::vector<Wall*> walls, float x, float y){
+	for(size_t i = 0; i < walls.size(); i++){
+		if(CheckWall(walls[i], x, y)){
+			return false;
+		}
+	}
+	return true;
+}
+
 int CheckItems(const std::vector<std::shared_ptr<Object>>& gh, const Person& Our_Hero){
 	for(size_t i = 0; i < gh.size(); i++){
 		if(CheckItem(gh[i], Our_Hero)){
@@ -92,6 +113,10 @@ void CheckButtonRightOnInventory(bool& flagRight, Person& Our_Hero, const sf::Ve
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)){
 				if(flagRight){
 					if(pixelPos.x < 330){
+
+						//const std::string _src_path_texture = "../src/textures/";
+						const std::string _src_path_texture = "/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
+
 						int flagLI = 0;
 						int numberG = (pixelPos.x - 25)/50;
 						int numberV = (pixelPos.y - 25)/50;
@@ -103,8 +128,6 @@ void CheckButtonRightOnInventory(bool& flagRight, Person& Our_Hero, const sf::Ve
 
 						std::vector<sf::RectangleShape> choiceItem;
 						choiceItem.resize(3);
-
-						const std::string _src_path_texture = "../src/textures/";//"/home/nikolay/Desktop/Eclipse/smfl/src/textures/";
 
 						const std::vector<std::string> Array_texture_menu = {_src_path_texture + "use.jpg",
 																		_src_path_texture + "drop.jpg",

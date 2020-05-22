@@ -49,6 +49,29 @@ bool Door::GetOpen() const{
 	return opened;
 }
 
+Wall::Wall(float xline, float yline, float x, float y){
+	wall.setSize(sf::Vector2f(xline, yline));
+	wall.setPosition(sf::Vector2f(x, y));
+	wall.setFillColor(sf::Color(0, 0, 0));
+	/*if(angle != 0){
+		wall.setRotation(90);
+	}else{
+		wall.setRotation(angle);
+	}*/
+}
+
+sf::Vector2f Wall::GetPosition() const{
+	return wall.getPosition();
+}
+
+sf::Vector2f Wall::GetSize() const{
+	return wall.getSize();
+}
+
+sf::RectangleShape Wall::GetBound() const{
+	return wall;
+}
+
 bool Room::checkTimer() {
 	if (std::chrono::duration_cast<std::chrono::milliseconds>
 		(std::chrono::steady_clock::now() - current_time).count() > timedif) {
@@ -149,6 +172,9 @@ Room::~Room(){
 	for(size_t i = 0; i < door.size(); i++){
 		delete door[i];
 	}
+	for(size_t i = 0; i < wall.size(); i++){
+		delete wall[i];
+	}
 }
 
 void Room::SetLeftDoor(){
@@ -165,6 +191,12 @@ void Room::SetUpDoor(){
 
 void Room::SetDownDoor(){
 	door.push_back(new Door(bound.getPosition().x + bound.getSize().x/2, bound.getPosition().y + bound.getSize().y, 3));
+}
+
+void Room::SetWall(float xline, float yline, float x, float y){
+	if(x + xline < bound.getSize().x && y + yline < bound.getSize().y){
+		wall.push_back(new Wall(xline, yline, x+bound.getPosition().x, y+bound.getPosition().y));
+	}
 }
 
 void Room::SetLeft(Room* gh){
@@ -212,6 +244,10 @@ sf::RectangleShape Room::GetBound(){
 
 std::vector<Door*> Room::GetDoors(){
 	return door;
+}
+
+std::vector<Wall*> Room::GetWalls(){
+	return wall;
 }
 
 std::vector<std::shared_ptr<Object>> Room::GetObjects(){
