@@ -4,22 +4,26 @@
 void CheckMoveHero(Person& Our_Hero, Room* current_room){
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
-				if(Our_Hero.GetPosition().x - velocity >= current_room->GetBound().getPosition().x){
+				if(Our_Hero.GetPosition().x - velocity >= current_room->GetBound().getPosition().x &&
+						CheckWalls(current_room->GetWalls(), Our_Hero.GetPosition().x - velocity, Our_Hero.GetPosition().y)){
 					Our_Hero.move(-velocity, 0);
 				}
+				//std::cout << CheckWalls(current_room->GetWalls(), Our_Hero.GetPosition().x, Our_Hero.GetPosition().y) << std::endl;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			{
 				if(Our_Hero.GetPosition().x + velocity <= current_room->GetBound().getPosition().x
-						+ current_room->GetBound().getSize().x - current_room->GetBound().getOutlineThickness()){
+						+ current_room->GetBound().getSize().x - current_room->GetBound().getOutlineThickness() &&
+						CheckWalls(current_room->GetWalls(), Our_Hero.GetPosition().x + velocity, Our_Hero.GetPosition().y)){
 					Our_Hero.move(velocity, 0);
 				}
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			{
-				if(Our_Hero.GetPosition().y - velocity >= current_room->GetBound().getPosition().y){
+				if(Our_Hero.GetPosition().y - velocity >= current_room->GetBound().getPosition().y &&
+						CheckWalls(current_room->GetWalls(), Our_Hero.GetPosition().x, Our_Hero.GetPosition().y - velocity)){
 					Our_Hero.move(0, -velocity);
 				}
 			}
@@ -27,7 +31,8 @@ void CheckMoveHero(Person& Our_Hero, Room* current_room){
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 			{
 				if(Our_Hero.GetPosition().y + velocity <= current_room->GetBound().getPosition().y
-						+ current_room->GetBound().getSize().y - current_room->GetBound().getOutlineThickness()){
+						+ current_room->GetBound().getSize().y - current_room->GetBound().getOutlineThickness() &&
+						CheckWalls(current_room->GetWalls(), Our_Hero.GetPosition().x, Our_Hero.GetPosition().y + velocity)){
 					Our_Hero.move(0, velocity);
 				}
 			}

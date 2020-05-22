@@ -45,6 +45,22 @@ private:
 	int quest;
 };
 
+class Wall{
+public:
+	Wall(float xline, float yline, float x, float y);
+
+	//void SetRotate(float angle);
+
+	sf::Vector2f GetPosition() const;
+
+	sf::Vector2f GetSize() const;
+
+	sf::RectangleShape GetBound() const;
+
+private:
+	sf::RectangleShape wall;
+};
+
 class Room{
 public:
 	Room(bool first_room_flag); // создать комнату, SIZE = 400
@@ -55,6 +71,8 @@ public:
 	void SetRightDoor(); // установить дверь направо
 	void SetDownDoor(); // установить дверь вниз
 	void SetUpDoor(); // установить дверь наверх
+
+	void SetWall(float xline, float yline, float x, float y);
 
 	void SetLeft(Room* gh); // привязать комнату налево
 	void SetRight(Room* gh); // привязать комнату направо
@@ -69,6 +87,7 @@ public:
 
 	sf::RectangleShape GetBound(); // получить модель комнаты
 	std::vector<Door*> GetDoors(); // получить двери в комнате
+	std::vector<Wall*> GetWalls();
 	std::vector<std::shared_ptr<Object>> GetObjects(); // получить объекты в комнате
 
 	void GiveItem(Inventory* sd, int gh);
@@ -80,7 +99,7 @@ public:
 	Room* toDown() const; // получить комнату снизу
 	bool checkTimer(); // проверить, прошло ли timedif с предыдущей проверки (используется для регулировки поведения врагов и снарядов)
 	void timeBasedEvents(Person& player);//смещение проджектайлов, врагов, прием атак игрока
-	const std::list<Enemy*>& getEnemies() const;//вернуть массив врагов
+const std::list<Enemy*>& getEnemies() const;//вернуть массив врагов
 	const std::list<Projectile>& getPlayerProjectiles() const;// вернуть массив снарядов игрока
 	const std::list<Projectile>& getEnemyProjectiles() const;//вернуть массив снарядов врага
 	std::list<DeathAnimation*>& getDeathAnimations();//вернуть массив анимаций смерти
@@ -109,6 +128,7 @@ private:
 	int attack_dir_y = 0;
 	sf::RectangleShape bound;
 	std::vector<Door*> door = {};
+	std::vector<Wall*> wall = {};
 	std::vector<std::shared_ptr<Object>> items = {};
 	Room* left = 0;
 	Room* right = 0;
